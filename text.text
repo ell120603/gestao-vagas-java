@@ -1,0 +1,14 @@
+docker-compose up 
+https://bcrypt-generator.com/
+gen_random_uuid()
+http://localhost:5050
+http://localhost:8080/api/swagger-ui/index.html
+   - API: http://localhost:8080/api
+   - Swagger UI: http://localhost:8080/api/swagger-ui/index.html
+   - PgAdmin: http://localhost:5050 (Email: admin@admin.com, Senha: admin)
+   - Usuário: admin
+- Senha: admin
+- Database: gestao_vagas
+Administrador do Sistema
+- Usuário: admin2
+- Senha: eliel123
