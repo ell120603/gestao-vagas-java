@@ -12,3 +12,13 @@ http://localhost:8080/api/swagger-ui/index.html
 Administrador do Sistema
 - Usuário: admin2
 - Senha: eliel123
+
+INSERT INTO admin_users (id, username, email, password, created_at, active) 
+VALUES (
+    '550e8400-e29b-41d4-a716-446655440000', 
+    'admin', 
+    'admin@gestaovagasapp.com', 
+    '$2a$10$3Qrx0rv8qSmZ8s3RlD5qE.uSC1c9jO2RIkH5oPBMCjWk5kKJBxJMG', 
+    CURRENT_TIMESTAMP, 
+    TRUE
+) ON CONFLICT DO NOTHING;
