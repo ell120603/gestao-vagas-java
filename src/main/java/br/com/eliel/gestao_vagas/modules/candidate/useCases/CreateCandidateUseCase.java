@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import br.com.eliel.gestao_vagas.modules.candidate.CandidateEntity;
 import br.com.eliel.gestao_vagas.modules.candidate.CandidateRepository;
+import br.com.eliel.gestao_vagas.modules.candidate.entites.CandidateEntity;
 
 @Service
 public class CreateCandidateUseCase {

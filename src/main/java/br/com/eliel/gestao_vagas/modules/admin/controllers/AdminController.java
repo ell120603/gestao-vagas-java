@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.eliel.gestao_vagas.modules.candidate.CandidateEntity;
 import br.com.eliel.gestao_vagas.modules.candidate.CandidateRepository;
+import br.com.eliel.gestao_vagas.modules.candidate.entites.CandidateEntity;
 import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
 import br.com.eliel.gestao_vagas.modules.company.repositories.CompanyRepository;
 import io.swagger.v3.oas.annotations.Operation;

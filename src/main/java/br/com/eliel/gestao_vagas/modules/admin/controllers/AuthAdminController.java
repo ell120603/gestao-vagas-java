@@ -23,7 +23,7 @@ public class AuthAdminController {
     private AuthAdminUseCase authAdminUseCase;
     
     @PostMapping("/admin")
-    @Operation(summary = "Autenticação de administrador", description = "Rota responsável por autenticar um administrador e retornar um token JWT")
+    @Operation(summary = "Autenticação de administrador", description = "Rota responsável por autenticar um administrador")
     public ResponseEntity<Object> auth(@Valid @RequestBody AuthAdminDTO authAdminDTO) {
         try {
             var result = this.authAdminUseCase.execute(authAdminDTO);

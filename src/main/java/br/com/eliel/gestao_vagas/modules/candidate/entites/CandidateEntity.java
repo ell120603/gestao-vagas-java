@@ -1,4 +1,4 @@
-package br.com.eliel.gestao_vagas.modules.candidate;
+package br.com.eliel.gestao_vagas.modules.candidate.entites;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -30,7 +30,7 @@ public class CandidateEntity {
     @NotBlank
     @Pattern(regexp="\\S+",message = "o campo [username] não deve conter espaço")
     private String username;
-    //colocar notblank
+    
     @Email(message = "o campo [email] deve conter um email valido")
     private String email;
     

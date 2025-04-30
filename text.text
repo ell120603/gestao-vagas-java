@@ -1,24 +1,26 @@
 docker-compose up 
+docker-compose down -v
+docker-compose up --build
 https://bcrypt-generator.com/
 gen_random_uuid()
 http://localhost:5050
 http://localhost:8080/api/swagger-ui/index.html
-   - API: http://localhost:8080/api
-   - Swagger UI: http://localhost:8080/api/swagger-ui/index.html
-   - PgAdmin: http://localhost:5050 (Email: admin@admin.com, Senha: admin)
-   - Usuário: admin
-- Senha: admin
-- Database: gestao_vagas
+    API: http://localhost:8080/api
+    Swagger UI: http://localhost:8080/api/swagger-ui/index.html
+    PgAdmin: http://localhost:5050 (Email: admin@admin.com, Senha: admin)
+    Usuário: admin
+ Senha: admin
+ Database: gestao_vagas
 Administrador do Sistema
-- Usuário: admin2
-- Senha: eliel123
+ Usuário: admin
+ Senha: eliel123
 
 INSERT INTO admin_users (id, username, email, password, created_at, active) 
 VALUES (
     '550e8400-e29b-41d4-a716-446655440000', 
     'admin', 
     'admin@gestaovagasapp.com', 
-    '$2a$10$3Qrx0rv8qSmZ8s3RlD5qE.uSC1c9jO2RIkH5oPBMCjWk5kKJBxJMG', 
+    '$2a$12$MRp/aMjxxba6X1ETJMmee.d/BYRLhRv38g7adG2ceVOE5SIOiTrTC', 
     CURRENT_TIMESTAMP, 
     TRUE
 ) ON CONFLICT DO NOTHING;
