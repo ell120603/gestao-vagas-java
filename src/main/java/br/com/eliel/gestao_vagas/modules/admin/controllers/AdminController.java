@@ -1,3 +1,5 @@
+//Aqui nós damos o controle para o admin.
+
 package br.com.eliel.gestao_vagas.modules.admin.controllers;
 
 import java.util.List;
