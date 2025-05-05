@@ -56,17 +56,16 @@ public class AdminController {
     
     @DeleteMapping("/candidates/{id}")
     @Operation(
-        summary = "Desativação de candidato", 
-        description = "Essa função é responsável por desativar um candidato",
+        summary = "Exclusão de candidato", 
+        description = "Essa função é responsável por excluir permanentemente um candidato",
         security = { @SecurityRequirement(name = "Bearer Authentication") }
     )
-    public ResponseEntity<Object> deactivateCandidate(@PathVariable UUID id) {
+    public ResponseEntity<Object> deleteCandidate(@PathVariable UUID id) {
         try {
             var candidate = this.candidateRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Candidato não encontrado"));
                 
-            candidate.setActive(false);
-            this.candidateRepository.save(candidate);
+            this.candidateRepository.delete(candidate);
             
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
@@ -76,17 +75,16 @@ public class AdminController {
     
     @DeleteMapping("/companies/{id}")
     @Operation(
-        summary = "Desativação de empresa", 
-        description = "Essa função é responsável por desativar uma empresa",
+        summary = "Exclusão de empresa", 
+        description = "Essa função é responsável por excluir permanentemente uma empresa",
         security = { @SecurityRequirement(name = "Bearer Authentication") }
     )
-    public ResponseEntity<Object> deactivateCompany(@PathVariable UUID id) {
+    public ResponseEntity<Object> deleteCompany(@PathVariable UUID id) {
         try {
             var company = this.companyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
                 
-            company.setActive(false);
-            this.companyRepository.save(company);
+            this.companyRepository.delete(company);
             
             return ResponseEntity.noContent().build();
         } catch (Exception e) {

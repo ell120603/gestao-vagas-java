@@ -32,16 +32,17 @@ public class CandidateEntity {
     private String username;
     
     @Email(message = "o campo [email] deve conter um email valido")
+    @NotBlank
     private String email;
     
     @Length(min=10,max=100,message= "A senha deve ter entre(10) e (100) caracteres")
+    @NotBlank
     private String password;
     
     private String description;
-    private String curriculum; //tirar do codigo
     
     @CreationTimestamp
-    private LocalDateTime createdAT;
+    private LocalDateTime createdAt;
     
     private boolean active = true;
 }

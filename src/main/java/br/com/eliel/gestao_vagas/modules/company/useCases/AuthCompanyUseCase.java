@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import br.com.eliel.gestao_vagas.exceptions.AuthenticationException;
 import br.com.eliel.gestao_vagas.modules.company.dto.AuthCompanyDTO;
 import br.com.eliel.gestao_vagas.modules.company.dto.AuthCompanyResponseDTO;
-import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
 import br.com.eliel.gestao_vagas.modules.company.repositories.CompanyRepository;
 import br.com.eliel.gestao_vagas.providers.JWTProvider;
 

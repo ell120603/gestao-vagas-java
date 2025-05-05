@@ -3,8 +3,8 @@ docker-compose down -v
 docker-compose up --build
 https://bcrypt-generator.com/
 gen_random_uuid()
-http://localhost:5050
-http://localhost:8080/api/swagger-ui/index.html
+http://localhost:5050-banco de dados
+http://localhost:8080/api/swagger-ui/index.html -testar
     API: http://localhost:8080/api
     Swagger UI: http://localhost:8080/api/swagger-ui/index.html
     PgAdmin: http://localhost:5050 (Email: admin@admin.com, Senha: admin)
