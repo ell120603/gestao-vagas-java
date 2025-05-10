@@ -5,9 +5,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.eliel.gestao_vagas.exceptions.AuthenticationException;
-import br.com.eliel.gestao_vagas.modules.candidate.CandidateRepository;
 import br.com.eliel.gestao_vagas.modules.candidate.dto.AuthCandidateDTO;
 import br.com.eliel.gestao_vagas.modules.candidate.dto.AuthCandidateResponseDTO;
+import br.com.eliel.gestao_vagas.modules.candidate.repositories.CandidateRepository;
 import br.com.eliel.gestao_vagas.providers.JWTProvider;
 
 import java.util.Arrays;
