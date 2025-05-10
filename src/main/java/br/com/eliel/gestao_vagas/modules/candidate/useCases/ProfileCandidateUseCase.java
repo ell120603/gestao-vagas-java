@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.eliel.gestao_vagas.modules.candidate.dto.ProfileCandidateResponseDTO;
 import br.com.eliel.gestao_vagas.modules.candidate.entites.CandidateEntity;
 import br.com.eliel.gestao_vagas.modules.candidate.repositories.CandidateRepository;
 
@@ -14,11 +15,20 @@ public class ProfileCandidateUseCase {
     @Autowired
     private CandidateRepository candidateRepository;
     
-    public CandidateEntity execute(UUID candidateId) {
+    public ProfileCandidateResponseDTO execute(UUID candidateId) {
         var candidate = this.candidateRepository.findById(candidateId)
             .orElseThrow(() -> {
                 throw new RuntimeException("Candidato não encontrado");
             });
-        return candidate;
+
+        var candidateDTO = ProfileCandidateResponseDTO.builder()
+            .id(candidate.getId())
+            .name(candidate.getName())
+            .username(candidate.getUsername())
+            .email(candidate.getEmail())
+            .description(candidate.getDescription())
+            .build();
+
+        return candidateDTO;
     }
 }
