@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import br.com.eliel.gestao_vagas.modules.candidate.entites.CandidateEntity;
 import br.com.eliel.gestao_vagas.modules.candidate.repositories.CandidateRepository;
@@ -93,4 +94,39 @@ public class AdminController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }   
+
+    @PutMapping("/candidates/{id}/activate")
+    @Operation(
+        summary = "Reativação de candidato",
+        description = "Essa função é responsável por reativar um candidato.",
+        security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    public ResponseEntity<Object> activateCandidate(@PathVariable UUID id) {
+        try {
+            var candidate = this.candidateRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidato não encontrado"));
+
+
+            return ResponseEntity.ok().body("Candidato reativado com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/companies/{id}/activate")
+    @Operation(
+        summary = "Reativação de empresa",
+        description = "Essa função é responsável por reativar uma empresa.",
+        security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    public ResponseEntity<Object> activateCompany(@PathVariable UUID id) {
+        try {
+            var company = this.companyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+
+            return ResponseEntity.ok().body("Empresa reativada com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
