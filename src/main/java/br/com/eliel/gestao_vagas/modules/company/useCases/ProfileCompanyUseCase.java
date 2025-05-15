@@ -22,7 +22,6 @@ public class ProfileCompanyUseCase {
             });
 
         var companyDTO = ProfileCompanyResponseDTO.builder()
-            .id(company.getId())
             .name(company.getName())
             .username(company.getUsername())
             .email(company.getEmail())

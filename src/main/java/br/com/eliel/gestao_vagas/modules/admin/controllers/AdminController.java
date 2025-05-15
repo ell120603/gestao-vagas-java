@@ -94,37 +94,41 @@ public class AdminController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }   
-
-    @PutMapping("/candidates/{id}/activate")
+    @PutMapping("/companies/{id}/reactivate")
     @Operation(
-        summary = "Reativação de candidato",
-        description = "Essa função é responsável por reativar um candidato.",
+        summary = "Reativação de empresa", 
+        description = "Essa função é responsável por reativar uma empresa",
         security = { @SecurityRequirement(name = "Bearer Authentication") }
     )
-    public ResponseEntity<Object> activateCandidate(@PathVariable UUID id) {
+    public ResponseEntity<Object> reactivateCompany(@PathVariable UUID id) {
         try {
-            var candidate = this.candidateRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato não encontrado"));
-
-
-            return ResponseEntity.ok().body("Candidato reativado com sucesso.");
+            var company = this.companyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+                
+            company.setActive(true);
+            this.companyRepository.save(company);
+            
+            return ResponseEntity.ok().body("Empresa reativada com sucesso");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    @PutMapping("/companies/{id}/activate")
+    
+    @PutMapping("/candidates/{id}/reactivate")
     @Operation(
-        summary = "Reativação de empresa",
-        description = "Essa função é responsável por reativar uma empresa.",
+        summary = "Reativação de candidato", 
+        description = "Essa função é responsável por reativar um candidato",
         security = { @SecurityRequirement(name = "Bearer Authentication") }
     )
-    public ResponseEntity<Object> activateCompany(@PathVariable UUID id) {
+    public ResponseEntity<Object> reactivateCandidate(@PathVariable UUID id) {
         try {
-            var company = this.companyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
-
-            return ResponseEntity.ok().body("Empresa reativada com sucesso.");
+            var candidate = this.candidateRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidato não encontrado"));
+                
+            candidate.setActive(true);
+            this.candidateRepository.save(candidate);
+            
+            return ResponseEntity.ok().body("Candidato reativado com sucesso");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
