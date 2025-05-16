@@ -2,7 +2,9 @@
 🛠 Pré-requisitos
 Antes de começar, você precisa ter instalado:
 -Java 17+
+
 -Maven 3.8+
+
 -PostgreSQL
 
 Recomendação usar uma:
