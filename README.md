@@ -48,13 +48,17 @@ Este projeto simula uma plataforma de gerenciamento de vagas. com exemplos prát
 
 ---
 
+
+
 🗂 Estrutura do projeto
 gestao-vagas-java
-├── controller     # Camada de entrada (HTTP)
-├── service        # Lógica de negócio
-├── repository     # Integração com o banco (JPA)
-├── model          # Entidades JPA
-└── dto            # Objetos de entrada e saída da API
+├── controller    
+├── service        
+├── repository     
+├── model          
+└── dto        
+
+
 🛠️ Em desenvolvimento
 🔄 Rota /vagas/ (em breve)
 Será implementado um novo endpoint para listagem de vagas por tipo (ex: CLT, PJ, estágio), permitindo filtragem via query params ou path variables.
@@ -62,6 +66,8 @@ Será implementado um novo endpoint para listagem de vagas por tipo (ex: CLT, PJ
 📥 Passo 1 – Clone o repositório
 git clone https://github.com/ell120603/gestao-vagas-java.git
 cd gestao-vagas-java
+
+
 🧾Passo 2 – Configure o banco de dados PostgreSQL
 Crie um banco de dados chamado gestao_vagas no seu PostgreSQL.
 No arquivo src/main/resources/application.properties, configure com seus dados de acesso:
@@ -70,6 +76,9 @@ spring.datasource.username=SEU_USUARIO
 spring.datasource.password=SUA_SENHA
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
+
+
+
 🚀 Passo 3 – Execute o projeto
 Se estiver usando o terminal:
 ./mvnw spring-boot:run
