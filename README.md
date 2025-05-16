@@ -1,6 +1,7 @@
 # Gestão de Vagas - API REST com Java e Spring Boot
 🛠 Pré-requisitos
 Antes de começar, você precisa ter instalado:
+
 -Java 17+
 
 -Maven 3.8+
