@@ -1,10 +1,12 @@
 # Gestão de Vagas - API REST com Java e Spring Boot
 🛠 Pré-requisitos
 Antes de começar, você precisa ter instalado:
-Java 17+
-Maven 3.8+
-PostgreSQL
-Um IDE (recomendado: IntelliJ, VS Code ou Eclipse)
+-Java 17+
+-Maven 3.8+
+-PostgreSQL
+
+Recomendação usar uma:
+Uma IDE (recomendado: IntelliJ, VS Code ou Eclipse)
 
 
 [![Java](https://img.shields.io/badge/Java-17-blue?logo=java)](https://www.oracle.com/java/)
