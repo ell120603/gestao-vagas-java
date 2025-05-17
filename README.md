@@ -58,9 +58,9 @@ Este projeto simula uma plataforma de gerenciamento de vagas. com exemplos prát
 🗂 Estrutura do projeto
 gestao-vagas-java
 ├── controller    
-├── service        
-├── repository     
-├── model          
+├── entites        
+├── repositories     
+├── UseCases         
 └── dto        
 
 
