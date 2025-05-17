@@ -1,4 +1,4 @@
-# Gestão de Vagas - API REST com Java e Spring Boot
+# Gestão de Vagas - MircroServiço com Java e Spring Boot
 🛠 Pré-requisitos
 Antes de começar, você precisa ter instalado:
 
@@ -17,7 +17,7 @@ Uma IDE (recomendado: IntelliJ, VS Code ou Eclipse)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blueviolet?logo=postgresql)](https://www.postgresql.org/)
 [![Maven](https://img.shields.io/badge/Maven-3.8-orange?logo=apache-maven)](https://maven.apache.org/)
 
-> API RESTful para gestão de vagas de emprego, desenvolvida com Java 17 e Spring Boot. Projeto criado seguindo boas práticas de arquitetura e desenvolvimento backend.
+>  MircroServiço para gestão de vagas de emprego, desenvolvida com Java 17 e Spring Boot. Projeto criado seguindo boas práticas de arquitetura e desenvolvimento backend.
 
 ---
 
