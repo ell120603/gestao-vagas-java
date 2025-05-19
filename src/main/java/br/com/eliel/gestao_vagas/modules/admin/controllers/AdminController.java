@@ -1,20 +1,22 @@
 //Aqui nós damos o controle para o admin.
 
 package br.com.eliel.gestao_vagas.modules.admin.controllers;
-
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
-
+import br.com.eliel.gestao_vagas.modules.admin.dto.AdminUpdateCandidateDTO;
+import br.com.eliel.gestao_vagas.modules.admin.dto.AdminUpdateCompanyDTO;
+import br.com.eliel.gestao_vagas.modules.admin.useCases.AdminUpdateCandidateUseCase;
+import br.com.eliel.gestao_vagas.modules.admin.useCases.AdminUpdateCompanyUseCase;
 import br.com.eliel.gestao_vagas.modules.candidate.entites.CandidateEntity;
 import br.com.eliel.gestao_vagas.modules.candidate.repositories.CandidateRepository;
 import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
@@ -22,6 +24,7 @@ import br.com.eliel.gestao_vagas.modules.company.repositories.CompanyRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/admin")
@@ -34,6 +37,12 @@ public class AdminController {
     
     @Autowired
     private CompanyRepository companyRepository;
+    
+    @Autowired
+    private AdminUpdateCompanyUseCase adminUpdateCompanyUseCase;
+    
+    @Autowired
+    private AdminUpdateCandidateUseCase adminUpdateCandidateUseCase;
     
     @GetMapping("/candidates")
     @Operation(
@@ -133,4 +142,35 @@ public class AdminController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("/companies/{id}")
+    @Operation(
+        summary = "Edição de empresa pelo admin", 
+        description = "Essa função permite ao admin editar os dados de uma empresa, exceto id, status de ativação e data de criação",
+        security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    public ResponseEntity<Object> updateCompany(@PathVariable UUID id, @Valid @RequestBody AdminUpdateCompanyDTO adminUpdateCompanyDTO) {
+        try {
+            var updatedCompany = this.adminUpdateCompanyUseCase.execute(id, adminUpdateCompanyDTO);
+            return ResponseEntity.ok().body(updatedCompany);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+    @PutMapping("/candidates/{id}")
+    @Operation(
+        summary = "Edição de candidato pelo admin", 
+        description = "Essa função permite ao admin editar os dados de um candidato, exceto id, status de ativação e data de criação",
+        security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    public ResponseEntity<Object> updateCandidate(@PathVariable UUID id, @Valid @RequestBody AdminUpdateCandidateDTO adminUpdateCandidateDTO) {
+        try {
+            var updatedCandidate = this.adminUpdateCandidateUseCase.execute(id, adminUpdateCandidateDTO);
+            return ResponseEntity.ok().body(updatedCandidate);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
+

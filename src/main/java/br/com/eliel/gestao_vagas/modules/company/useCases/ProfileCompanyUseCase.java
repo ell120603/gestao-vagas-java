@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.eliel.gestao_vagas.modules.company.dto.ProfileCompanyResponseDTO;
-import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
 import br.com.eliel.gestao_vagas.modules.company.repositories.CompanyRepository;
 
 @Service
