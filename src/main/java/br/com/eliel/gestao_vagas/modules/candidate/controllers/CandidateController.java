@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import br.com.eliel.gestao_vagas.modules.candidate.dto.DeactivateCandidateDTO;
+import br.com.eliel.gestao_vagas.modules.candidate.dto.UpdateCandidateDTO;
 import br.com.eliel.gestao_vagas.modules.candidate.useCases.DeactivateCandidateUseCase;
+import br.com.eliel.gestao_vagas.modules.candidate.useCases.UpdateCandidateUseCase;
 
 @RestController
 @RequestMapping("/candidate")
@@ -30,6 +33,8 @@ public class CandidateController {
     private CreateCandidateUseCase createCandidateUseCase;
     @Autowired
     private DeactivateCandidateUseCase deactivateCandidateUseCase;
+    @Autowired
+    private UpdateCandidateUseCase updateCandidateUseCase;
 
     @PostMapping("/")
     @Operation(summary = "Cadastro de candidato", description = "Rota responsável por cadastrar um novo candidato")
@@ -62,5 +67,24 @@ public class CandidateController {
         }
     }
 
+
+    @PutMapping("/")
+    @PreAuthorize("hasRole('CANDIDATE')")
+    @Operation(
+        summary = "Atualização de dados do candidato", 
+        description = "Rota responsável por atualizar os dados do próprio candidato",
+        security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    public ResponseEntity<Object> update(
+        @Valid @RequestBody UpdateCandidateDTO updateCandidateDTO,
+        Authentication authentication
+    ) {
+        try {
+            var candidateId = UUID.fromString(authentication.getName());
+            var updatedCandidate = this.updateCandidateUseCase.execute(candidateId, updateCandidateDTO);
+            return ResponseEntity.ok().body(updatedCandidate);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
-//olá mundo
