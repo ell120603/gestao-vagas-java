@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfileCandidateResponseDTO {
-    private UUID id;
     private String name;
     private String username;
     private String email;

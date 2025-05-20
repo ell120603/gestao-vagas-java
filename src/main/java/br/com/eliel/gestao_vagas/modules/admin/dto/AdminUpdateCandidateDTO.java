@@ -18,11 +18,9 @@ public class AdminUpdateCandidateDTO {
     
     private String name;
     
-    @NotBlank(message = "O username é obrigatório")
     @Pattern(regexp="\\S+", message = "O campo [username] não deve conter espaço")
     private String username;
     
-    @NotBlank(message = "O email é obrigatório")
     @Email(message = "O campo [email] deve conter um email válido")
     private String email;
     

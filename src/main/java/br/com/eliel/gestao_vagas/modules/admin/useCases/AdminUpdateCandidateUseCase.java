@@ -24,10 +24,18 @@ public class AdminUpdateCandidateUseCase {
         CandidateEntity candidate = this.candidateRepository.findById(candidateId)
                 .orElseThrow(() -> new EntityNotFoundException("Candidato não encontrado"));
         
-        candidate.setName(adminUpdateCandidateDTO.getName());
-        candidate.setUsername(adminUpdateCandidateDTO.getUsername());
-        candidate.setEmail(adminUpdateCandidateDTO.getEmail());
-        candidate.setDescription(adminUpdateCandidateDTO.getDescription());
+        if (adminUpdateCandidateDTO.getName() != null) {
+            candidate.setName(adminUpdateCandidateDTO.getName());
+        }
+        if (adminUpdateCandidateDTO.getUsername() != null) {
+            candidate.setUsername(adminUpdateCandidateDTO.getUsername());
+        }
+        if (adminUpdateCandidateDTO.getEmail() != null) {
+            candidate.setEmail(adminUpdateCandidateDTO.getEmail());
+        }
+        if (adminUpdateCandidateDTO.getDescription() != null) {
+            candidate.setDescription(adminUpdateCandidateDTO.getDescription());
+        }
         
         if (adminUpdateCandidateDTO.getPassword() != null && !adminUpdateCandidateDTO.getPassword().isEmpty()) {
             candidate.setPassword(this.passwordEncoder.encode(adminUpdateCandidateDTO.getPassword()));
