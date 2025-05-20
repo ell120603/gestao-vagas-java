@@ -26,11 +26,8 @@ public class SecurityFilter extends OncePerRequestFilter {
     private JWTProvider jwtProvider;
 
     @Override
-    protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         
         String header = request.getHeader("Authorization");
 
@@ -54,6 +51,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 request.setAttribute("candidate_id", subject);
                 request.setAttribute("company_id", subject);
             } catch (Exception e) {
+
             }
         }
         
