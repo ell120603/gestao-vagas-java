@@ -1,6 +1,6 @@
 package br.com.eliel.gestao_vagas.modules.candidate.dto;
 
-import java.util.UUID;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

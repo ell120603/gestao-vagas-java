@@ -3,7 +3,6 @@ package br.com.eliel.gestao_vagas.modules.admin.dto;
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

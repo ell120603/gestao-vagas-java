@@ -24,3 +24,41 @@ VALUES (
     CURRENT_TIMESTAMP, 
     TRUE
 ) ON CONFLICT DO NOTHING;
+{
+  "name": "Tech Solutions",
+  "username": "techsolutions",
+  "email": "contato@techsolutions.com",
+  "password": "senha123456",
+  "website": "https://techsolutions.com",
+  "description": "Empresa especializada em desenvolvimento de software"
+}
+{
+  "titulo": "Analista de Marketing Digital",
+  "descricao": "Vaga para analista de marketing digital com experiência em redes sociais e campanhas online",
+  "areaAtuacao": "Marketing",
+  "tecnologias": ["Google Analytics", "Meta Ads", "Google Ads", "WordPress"],
+  "tipoContrato": "CLT",
+  "localizacao": "São Paulo - Híbrido",
+  "salario": 5000.00,
+  "beneficios": "Vale alimentação, Vale refeição, Plano de saúde"
+}
+{
+  "titulo": "Médico Clínico Geral",
+  "descricao": "Vaga para médico clínico geral para atuar em clínica médica",
+  "areaAtuacao": "Medicina",
+  "tecnologias": ["Prontuário Eletrônico", "Sistema de Gestão Hospitalar"],
+  "tipoContrato": "PJ",
+  "localizacao": "Rio de Janeiro",
+  "salario": 15000.00,
+  "beneficios": "Plano de saúde, Plano odontológico, Vale transporte"
+}
+{
+  "titulo": "Desenvolvedor Full Stack",
+  "descricao": "Vaga para desenvolvedor full stack com experiência em React e Node.js",
+  "areaAtuacao": "Tecnologia da Informação",
+  "tecnologias": ["React", "Node.js", "TypeScript", "PostgreSQL", "Docker"],
+  "tipoContrato": "CLT",
+  "localizacao": "Remoto",
+  "salario": 12000.00,
+  "beneficios": "Vale alimentação, Vale refeição, Plano de saúde, Plano odontológico, Gympass"
+}
