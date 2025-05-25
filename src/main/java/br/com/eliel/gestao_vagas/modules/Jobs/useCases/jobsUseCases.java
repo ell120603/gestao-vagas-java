@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import br.com.eliel.gestao_vagas.modules.company.repositories.CompanyRepository;
 import br.com.eliel.gestao_vagas.modules.jobs.dto.JobsDTO;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
-import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepositories;
+import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 
 @Service
 public class JobsUseCases {
     @Autowired
-    private JobsRepositories jobsRepository;
+    private JobsRepository jobsRepository;
 
     @Autowired
     private CompanyRepository companyRepository;

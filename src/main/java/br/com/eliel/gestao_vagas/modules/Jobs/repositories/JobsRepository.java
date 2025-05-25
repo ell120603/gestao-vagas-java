@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 
 @Repository
-public interface JobsRepositories extends JpaRepository<JobEntity, UUID> {
+public interface JobsRepository extends JpaRepository<JobEntity, UUID> {
     List<JobEntity> findByCompanyId(UUID companyId);
     List<JobEntity> findByActiveTrue();
 }

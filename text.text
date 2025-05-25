@@ -62,3 +62,11 @@ VALUES (
   "salario": 12000.00,
   "beneficios": "Vale alimentação, Vale refeição, Plano de saúde, Plano odontológico, Gympass"
 }
+{
+  "name": "Innovative Tech",
+  "username": "innovativetech",
+  "email": "contato@innovativetech.com",
+  "password": "senha7891011",
+  "website": "https://innovativetech.com",
+  "description": "Empresa focada em soluções inovadoras para o mercado de tecnologia"
+}
