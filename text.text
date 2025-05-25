@@ -14,6 +14,7 @@ http://localhost:8080/api/swagger-ui/index.html -testar
 Administrador do Sistema
  Usuário: admin
  Senha: eliel123
+ p
 
 INSERT INTO admin_users (id, username, email, password, created_at, active) 
 VALUES (
