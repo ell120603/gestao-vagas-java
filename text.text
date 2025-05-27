@@ -34,6 +34,14 @@ VALUES (
   "description": "Empresa especializada em desenvolvimento de software"
 }
 {
+  "name": "Innovative Tech",
+  "username": "innovativetech",
+  "email": "contato@innovativetech.com",
+  "password": "senha7891011",
+  "website": "https://innovativetech.com",
+  "description": "Empresa focada em soluções inovadoras para o mercado de tecnologia"
+}
+{
   "titulo": "Analista de Marketing Digital",
   "descricao": "Vaga para analista de marketing digital com experiência em redes sociais e campanhas online",
   "areaAtuacao": "Marketing",
@@ -63,11 +71,11 @@ VALUES (
   "salario": 12000.00,
   "beneficios": "Vale alimentação, Vale refeição, Plano de saúde, Plano odontológico, Gympass"
 }
+
 {
-  "name": "Innovative Tech",
-  "username": "innovativetech",
-  "email": "contato@innovativetech.com",
-  "password": "senha7891011",
-  "website": "https://innovativetech.com",
-  "description": "Empresa focada em soluções inovadoras para o mercado de tecnologia"
+  "name": "João Silva",
+  "username": "joaosilva",
+  "email": "joao.silva@example.com",
+  "password": "senhaSegura123",
+  "description": "Desenvolvedor com experiência em Java e Spring Boot."
 }

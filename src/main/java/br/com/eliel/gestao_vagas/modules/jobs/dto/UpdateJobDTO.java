@@ -1,10 +1,9 @@
 package br.com.eliel.gestao_vagas.modules.jobs.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,16 +14,16 @@ import br.com.eliel.gestao_vagas.modules.jobs.entites.TipoContrato;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class JobsResponseDTO {
-    private UUID id;
+public class UpdateJobDTO {
     private String titulo;
     private String descricao;
     private String areaAtuacao;
     private List<String> tecnologias;
+    
+    @NotNull(message = "O tipo de contrato deve ser CLT, PJ, TEMPORARIO ou ESTAGIO")
     private TipoContrato tipoContrato;
+    
     private String localizacao;
-    private String companyName;
     private BigDecimal salario;
     private String beneficios;
-    private LocalDateTime createdAt;
 } 

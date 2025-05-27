@@ -1,11 +1,14 @@
 package br.com.eliel.gestao_vagas.modules.jobs.entites;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,7 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,11 +43,11 @@ public class JobEntity {
     @NotBlank(message = "A área de atuação é obrigatória")
     private String areaAtuacao;
 
-    private String[] tecnologias;
+    private List<String> tecnologias;
 
-    @NotBlank(message = "O tipo de contrato é obrigatório")
-    @Pattern(regexp = "CLT|PJ|TEMPORARIO|ESTAGIO", message = "O tipo de contrato deve ser CLT, PJ, TEMPORARIO ou ESTAGIO")
-    private String tipoContrato;
+    @NotNull(message = "O tipo de contrato é obrigatório")
+    @Enumerated(EnumType.STRING)
+    private TipoContrato tipoContrato;
 
     @NotBlank(message = "A localização é obrigatória")
     private String localizacao;
