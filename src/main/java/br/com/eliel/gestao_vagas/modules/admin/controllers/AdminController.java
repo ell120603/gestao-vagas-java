@@ -173,37 +173,5 @@ public class AdminController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    @PutMapping("/company/{companyId}/activate")
-    @Operation(
-        summary = "Reativar empresa", 
-        description = "Rota responsável por reativar uma empresa",
-        security = { @SecurityRequirement(name = "Bearer Authentication") }
-    )
-    public ResponseEntity<Object> activateCompany(@PathVariable UUID companyId) {
-        var company = this.companyRepository.findById(companyId)
-            .orElseThrow(() -> new EntityNotFoundException("Empresa não encontrada"));
-
-        company.setActive(true);
-        this.companyRepository.save(company);
-
-        return ResponseEntity.ok().body("Empresa reativada com sucesso");
-    }
-
-    @PutMapping("/candidate/{candidateId}/activate")
-    @Operation(
-        summary = "Reativar candidato", 
-        description = "Rota responsável por reativar um candidato",
-        security = { @SecurityRequirement(name = "Bearer Authentication") }
-    )
-    public ResponseEntity<Object> activateCandidate(@PathVariable UUID candidateId) {
-        var candidate = this.candidateRepository.findById(candidateId)
-            .orElseThrow(() -> new EntityNotFoundException("Candidato não encontrado"));
-
-        candidate.setActive(true);
-        this.candidateRepository.save(candidate);
-
-        return ResponseEntity.ok().body("Candidato reativado com sucesso");
-    }
 }
 
