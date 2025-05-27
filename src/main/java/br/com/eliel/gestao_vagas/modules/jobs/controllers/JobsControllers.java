@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,9 @@ import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.useCases.JobsUseCases;
 import br.com.eliel.gestao_vagas.modules.jobs.useCases.ListAllJobsUseCase;
 import br.com.eliel.gestao_vagas.modules.jobs.useCases.UpdateJobUseCase;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.CloseJobUseCase;
 
 @RestController
 @RequestMapping("/job")
@@ -86,6 +90,32 @@ public class JobsControllers {
                 jobId,
                 UUID.fromString(companyId.toString()),
                 updateJobDTO
+            );
+            return ResponseEntity.ok().body(job);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @Autowired
+private CloseJobUseCase closeJobUseCase;
+
+    @PatchMapping("/{jobId}/close")
+    @PreAuthorize("hasRole('COMPANY')")
+    @Operation(
+        summary = "Fechamento de vaga", 
+        description = "Rota responsável por fechar uma vaga existente",
+        security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    public ResponseEntity<Object> close(
+        @PathVariable UUID jobId,
+        HttpServletRequest request
+    ) {
+        var companyId = request.getAttribute("company_id");
+        
+        try {
+            var job = this.closeJobUseCase.execute(
+                jobId,
+                UUID.fromString(companyId.toString())
             );
             return ResponseEntity.ok().body(job);
         } catch (Exception e) {

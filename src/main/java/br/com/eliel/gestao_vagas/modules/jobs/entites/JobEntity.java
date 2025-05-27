@@ -22,7 +22,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
-
 @Data
 @Entity
 @Table(name = "jobs")
