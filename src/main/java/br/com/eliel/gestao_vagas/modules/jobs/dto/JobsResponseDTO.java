@@ -20,7 +20,7 @@ public class JobsResponseDTO {
     private String titulo;
     private String descricao;
     private String areaAtuacao;
-    private List<String> tecnologias;
+    private List<String> requisitos;
     private TipoContrato tipoContrato;
     private String localizacao;
     private String companyName;

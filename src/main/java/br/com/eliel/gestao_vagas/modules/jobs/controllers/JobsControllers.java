@@ -22,13 +22,12 @@ import jakarta.validation.Valid;
 import br.com.eliel.gestao_vagas.modules.jobs.dto.JobsDTO;
 import br.com.eliel.gestao_vagas.modules.jobs.dto.JobsResponseDTO;
 import br.com.eliel.gestao_vagas.modules.jobs.dto.UpdateJobDTO;
-import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.useCases.JobsUseCases;
 import br.com.eliel.gestao_vagas.modules.jobs.useCases.ListAllJobsUseCase;
 import br.com.eliel.gestao_vagas.modules.jobs.useCases.UpdateJobUseCase;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.useCases.CloseJobUseCase;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.ApplyJobUseCase;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.ListCompanyJobsUseCase;
 
 @RestController
 @RequestMapping("/job")
@@ -42,6 +41,15 @@ public class JobsControllers {
 
     @Autowired
     private UpdateJobUseCase updateJobUseCase;
+
+    @Autowired
+    private CloseJobUseCase closeJobUseCase;
+
+    @Autowired
+    private ApplyJobUseCase applyJobUseCase;
+
+    @Autowired
+    private ListCompanyJobsUseCase listCompanyJobsUseCase;
 
     @PostMapping("/")
     @PreAuthorize("hasRole('COMPANY')")
@@ -96,8 +104,6 @@ public class JobsControllers {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @Autowired
-private CloseJobUseCase closeJobUseCase;
 
     @PatchMapping("/{jobId}/close")
     @PreAuthorize("hasRole('COMPANY')")
@@ -121,5 +127,42 @@ private CloseJobUseCase closeJobUseCase;
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PostMapping("/{jobId}/apply")
+    @PreAuthorize("hasRole('CANDIDATE')")
+    @Operation(
+        summary = "Candidatura em vaga", 
+        description = "Rota responsável por permitir que um candidato se candidate a uma vaga",
+        security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    public ResponseEntity<Object> apply(
+        @PathVariable UUID jobId,
+        HttpServletRequest request
+    ) {
+        var candidateId = request.getAttribute("candidate_id");
+        
+        try {
+            var result = this.applyJobUseCase.execute(
+                UUID.fromString(candidateId.toString()),
+                jobId
+            );
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/company")
+    @PreAuthorize("hasRole('COMPANY')")
+    @Operation(
+        summary = "Listagem de vagas da empresa", 
+        description = "Rota responsável por listar todas as vagas criadas pela empresa logada",
+        security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    public ResponseEntity<List<JobsResponseDTO>> listCompanyJobs(HttpServletRequest request) {
+        var companyId = request.getAttribute("company_id");
+        var jobs = this.listCompanyJobsUseCase.execute(UUID.fromString(companyId.toString()));
+        return ResponseEntity.ok().body(jobs);
     }
 }

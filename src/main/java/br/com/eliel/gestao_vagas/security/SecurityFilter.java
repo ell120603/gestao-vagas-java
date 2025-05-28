@@ -17,9 +17,13 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityFilter.class);
 
     @Autowired
     private JWTProvider jwtProvider;
@@ -50,7 +54,9 @@ public class SecurityFilter extends OncePerRequestFilter {
                 request.setAttribute("candidate_id", subject);
                 request.setAttribute("company_id", subject);
             } catch (Exception e) {
-
+                logger.error("Erro ao processar token JWT: {}", e.getMessage());
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
         }
         

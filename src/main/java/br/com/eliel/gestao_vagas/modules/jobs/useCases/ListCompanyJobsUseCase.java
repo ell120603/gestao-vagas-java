@@ -1,6 +1,7 @@
 package br.com.eliel.gestao_vagas.modules.jobs.useCases;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,13 @@ import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
 
 @Service
-public class ListAllJobsUseCase {
+public class ListCompanyJobsUseCase {
     
     @Autowired
     private JobsRepository jobsRepository;
-    
-    public List<JobsResponseDTO> execute() {
-        var jobs = this.jobsRepository.findByActiveTrue();
+
+    public List<JobsResponseDTO> execute(UUID companyId) {
+        var jobs = this.jobsRepository.findByCompanyId(companyId);
         
         return jobs.stream().map(job -> {
             return JobsResponseDTO.builder()

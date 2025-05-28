@@ -35,6 +35,10 @@ public class AuthCandidateUseCase {
         if (!passwordMatches) {
             throw new AuthenticationException();
         }
+
+        if (!candidate.isActive()) {
+            throw new AuthenticationException("Candidato desativado");
+        }
         
         var token = jwtProvider.generateToken(candidate.getId().toString(), Arrays.asList("CANDIDATE"));
         

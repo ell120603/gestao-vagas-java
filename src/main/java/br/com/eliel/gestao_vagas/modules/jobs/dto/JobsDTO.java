@@ -25,7 +25,7 @@ public class JobsDTO {
     @NotBlank(message = "A área de atuação é obrigatória")
     private String areaAtuacao;
 
-    private List<String> tecnologias;
+    private List<String> requisitos;
 
     @NotNull(message = "O tipo de contrato é obrigatório")
     private TipoContrato tipoContrato;

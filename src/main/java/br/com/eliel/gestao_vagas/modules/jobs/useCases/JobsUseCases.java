@@ -27,7 +27,7 @@ public class JobsUseCases {
             .titulo(jobsDTO.getTitulo())
             .descricao(jobsDTO.getDescricao())
             .areaAtuacao(jobsDTO.getAreaAtuacao())
-            .tecnologias(jobsDTO.getTecnologias())
+            .requisitos(jobsDTO.getRequisitos())
             .tipoContrato(jobsDTO.getTipoContrato())
             .localizacao(jobsDTO.getLocalizacao())
             .company(company) 

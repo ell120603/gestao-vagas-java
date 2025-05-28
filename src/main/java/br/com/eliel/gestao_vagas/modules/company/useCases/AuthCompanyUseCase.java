@@ -35,6 +35,10 @@ public class AuthCompanyUseCase {
         if (!passwordMatches) {
             throw new AuthenticationException();
         }
+
+        if (!company.isActive()) {
+            throw new AuthenticationException("Empresa desativada");
+        }
         
         var token = jwtProvider.generateToken(company.getId().toString(), Arrays.asList("COMPANY"));
         

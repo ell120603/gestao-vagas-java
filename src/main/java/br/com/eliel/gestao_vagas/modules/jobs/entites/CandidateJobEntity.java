@@ -1,4 +1,4 @@
-package br.com.eliel.gestao_vagas.modules.admin.entities;
+package br.com.eliel.gestao_vagas.modules.jobs.entites;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -10,31 +10,26 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "admin_users")
+@Entity(name = "candidate_job")
+@Table(name = "candidate_job")
 @Data
-public class AdminEntity {
-    
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CandidateJobEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    
-    @NotBlank
-    private String username;
-    
-    @Email
-    @NotBlank
-    private String email;
-    
-    @NotBlank
-    private String password;
-    
+
+    private UUID candidateId;
+
+    private UUID jobId;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
-    
-    private boolean active;
-}
+} 

@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.eliel.gestao_vagas.exceptions.AuthenticationException;
 import br.com.eliel.gestao_vagas.modules.jobs.dto.UpdateJobDTO;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
@@ -21,7 +22,7 @@ public class UpdateJobUseCase {
             .orElseThrow(() -> new EntityNotFoundException("Vaga não encontrada"));
 
         if (!job.getCompany().getId().equals(companyId)) {
-            throw new RuntimeException("Você não tem permissão para editar esta vaga");
+            throw new AuthenticationException("Você não tem permissão para editar esta vaga");
         }
 
         if (updateJobDTO.getTitulo() != null) {
@@ -33,8 +34,8 @@ public class UpdateJobUseCase {
         if (updateJobDTO.getAreaAtuacao() != null) {
             job.setAreaAtuacao(updateJobDTO.getAreaAtuacao());
         }
-        if (updateJobDTO.getTecnologias() != null) {
-            job.setTecnologias(updateJobDTO.getTecnologias());
+        if (updateJobDTO.getRequisitos() != null) {
+            job.setRequisitos(updateJobDTO.getRequisitos());
         }
         if (updateJobDTO.getTipoContrato() != null) {
             job.setTipoContrato(updateJobDTO.getTipoContrato());
