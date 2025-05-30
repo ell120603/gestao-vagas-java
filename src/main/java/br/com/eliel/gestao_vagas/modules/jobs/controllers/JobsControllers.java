@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -28,6 +29,9 @@ import br.com.eliel.gestao_vagas.modules.jobs.useCases.UpdateJobUseCase;
 import br.com.eliel.gestao_vagas.modules.jobs.useCases.CloseJobUseCase;
 import br.com.eliel.gestao_vagas.modules.jobs.useCases.ApplyJobUseCase;
 import br.com.eliel.gestao_vagas.modules.jobs.useCases.ListCompanyJobsUseCase;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.DeleteJobUseCase;
+import br.com.eliel.gestao_vagas.modules.jobs.dto.DeleteJobDTO;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.ReactivateJobUseCase;
 
 @RestController
 @RequestMapping("/job")
@@ -50,6 +54,12 @@ public class JobsControllers {
 
     @Autowired
     private ListCompanyJobsUseCase listCompanyJobsUseCase;
+
+    @Autowired
+    private DeleteJobUseCase deleteJobUseCase;
+
+    @Autowired
+    private ReactivateJobUseCase reactivateJobUseCase;
 
     @PostMapping("/")
     @PreAuthorize("hasRole('COMPANY')")
@@ -164,5 +174,55 @@ public class JobsControllers {
         var companyId = request.getAttribute("company_id");
         var jobs = this.listCompanyJobsUseCase.execute(UUID.fromString(companyId.toString()));
         return ResponseEntity.ok().body(jobs);
+    }
+
+    @DeleteMapping("/{jobId}")
+    @PreAuthorize("hasRole('COMPANY')")
+    @Operation(
+        summary = "Deleção de vaga", 
+        description = "Rota responsável por deletar uma vaga existente. Requer autenticação e senha da empresa.",
+        security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    public ResponseEntity<Object> delete(
+        @PathVariable UUID jobId,
+        @Valid @RequestBody DeleteJobDTO deleteJobDTO,
+        HttpServletRequest request
+    ) {
+        var companyId = request.getAttribute("company_id");
+        
+        try {
+            this.deleteJobUseCase.execute(
+                jobId,
+                UUID.fromString(companyId.toString()),
+                deleteJobDTO.getPassword()
+            );
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{jobId}/reactivate")
+    @PreAuthorize("hasRole('COMPANY')")
+    @Operation(
+        summary = "Reativação de vaga", 
+        description = "Rota responsável por reativar uma vaga que foi fechada anteriormente",
+        security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    public ResponseEntity<Object> reactivate(
+        @PathVariable UUID jobId,
+        HttpServletRequest request
+    ) {
+        var companyId = request.getAttribute("company_id");
+        
+        try {
+            var job = this.reactivateJobUseCase.execute(
+                jobId,
+                UUID.fromString(companyId.toString())
+            );
+            return ResponseEntity.ok().body(job);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

@@ -16,15 +16,6 @@ Administrador do Sistema
  Senha: eliel123
  p
 
-INSERT INTO admin_users (id, username, email, password, created_at, active) 
-VALUES (
-    '550e8400-e29b-41d4-a716-446655440000', 
-    'admin', 
-    'admin@gestaovagasapp.com', 
-    '$2a$12$MRp/aMjxxba6X1ETJMmee.d/BYRLhRv38g7adG2ceVOE5SIOiTrTC', 
-    CURRENT_TIMESTAMP, 
-    TRUE
-) ON CONFLICT DO NOTHING;
 {
   "name": "Tech Solutions",
   "username": "techsolutions",
