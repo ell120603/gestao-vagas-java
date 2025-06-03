@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,6 +17,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -34,22 +34,16 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-               
-                .requestMatchers("/api/company/**").permitAll()
-                .requestMatchers("/api/candidate/**").permitAll()
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/job/**").permitAll()
-                
+                .requestMatchers("/company/**").permitAll()
+                .requestMatchers("/candidate/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/job/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
-    }
-    
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/swagger-ui/**", "/api/v3/api-docs/**");
     }
     
     @Bean
@@ -60,36 +54,10 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
-            "http://localhost:3000",
-            "http://localhost:8080",
-            "https://gestao-vagas-java-production.up.railway.app",
-            "https://*.onrender.com",
-            "https://gestao-vagas-java-qii9.onrender.com"
-        ));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        configuration.setAllowedHeaders(Arrays.asList(
-            "Authorization",
-            "Content-Type",
-            "X-Requested-With",
-            "Accept",
-            "Origin",
-            "Access-Control-Request-Method",
-            "Access-Control-Request-Headers",
-            "Access-Control-Allow-Origin",
-            "Access-Control-Allow-Headers",
-            "Access-Control-Allow-Methods",
-            "Access-Control-Allow-Credentials"
-        ));
-        configuration.setExposedHeaders(Arrays.asList(
-            "Authorization",
-            "Access-Control-Allow-Origin",
-            "Access-Control-Allow-Headers",
-            "Access-Control-Allow-Methods",
-            "Access-Control-Allow-Credentials"
-        ));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setExposedHeaders(List.of("Authorization"));
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
