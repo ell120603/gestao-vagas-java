@@ -33,17 +33,17 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // Allow access to Swagger UI and API docs
+               
                 .requestMatchers("/api/swagger-ui/**").permitAll()
                 .requestMatchers("/api/v3/api-docs/**").permitAll()
                 
-                // Allow access to public endpoints
+                
                 .requestMatchers("/api/company/**").permitAll()
                 .requestMatchers("/api/candidate/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/job/**").permitAll()
                 
-                // All other requests require authentication
+                
                 .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
@@ -63,7 +63,8 @@ public class SecurityConfig {
             "http://localhost:3000",
             "http://localhost:8080",
             "https://gestao-vagas-java-production.up.railway.app",
-            "https://*.onrender.com"
+            "https://*.onrender.com",
+            "https://gestao-vagas-java-qii9.onrender.com"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList(
@@ -73,9 +74,19 @@ public class SecurityConfig {
             "Accept",
             "Origin",
             "Access-Control-Request-Method",
-            "Access-Control-Request-Headers"
+            "Access-Control-Request-Headers",
+            "Access-Control-Allow-Origin",
+            "Access-Control-Allow-Headers",
+            "Access-Control-Allow-Methods",
+            "Access-Control-Allow-Credentials"
         ));
-        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        configuration.setExposedHeaders(Arrays.asList(
+            "Authorization",
+            "Access-Control-Allow-Origin",
+            "Access-Control-Allow-Headers",
+            "Access-Control-Allow-Methods",
+            "Access-Control-Allow-Credentials"
+        ));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         
