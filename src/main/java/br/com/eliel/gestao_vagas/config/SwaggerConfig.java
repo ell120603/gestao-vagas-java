@@ -6,9 +6,13 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
 public class SwaggerConfig {
+
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -21,6 +25,8 @@ public class SwaggerConfig {
                 .schemaRequirement("bearer-key", new SecurityScheme()
                         .type(SecurityScheme.Type.HTTP)
                         .scheme("bearer")
-                        .bearerFormat("JWT"));
+                        .bearerFormat("JWT")
+                        .in(SecurityScheme.In.HEADER)
+                        .name("Authorization"));
     }
 }

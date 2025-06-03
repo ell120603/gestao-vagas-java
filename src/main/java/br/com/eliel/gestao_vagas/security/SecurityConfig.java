@@ -17,7 +17,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.List;
 
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -34,11 +33,11 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/company/**").permitAll()
-                .requestMatchers("/candidate/**").permitAll()
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/job/**").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/api/company/**").permitAll()
+                .requestMatchers("/api/candidate/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/job/**").permitAll()
+                .requestMatchers("/api/swagger-ui/**", "/api/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
