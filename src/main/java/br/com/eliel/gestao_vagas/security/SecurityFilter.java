@@ -31,26 +31,27 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        
+
         String header = request.getHeader("Authorization");
 
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
-            
+
             try {
                 String subject = jwtProvider.validateToken(token);
                 DecodedJWT decodedJWT = jwtProvider.getDecodedJWT(token);
-                
+
                 var roles = decodedJWT.getClaim("roles").asList(String.class);
-                var authorities = roles != null ? 
-                    roles.stream().map(SimpleGrantedAuthority::new).toList() : 
-                    Collections.<SimpleGrantedAuthority>emptyList();
-                
-                UsernamePasswordAuthenticationToken auth = 
-                    new UsernamePasswordAuthenticationToken(subject, null, authorities);
-                
+                var authorities = roles != null ? roles.stream()
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                        .toList()
+                        : Collections.<SimpleGrantedAuthority>emptyList();
+
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(subject, null,
+                        authorities);
+
                 SecurityContextHolder.getContext().setAuthentication(auth);
-                
+
                 request.setAttribute("candidate_id", subject);
                 request.setAttribute("company_id", subject);
             } catch (Exception e) {
@@ -59,7 +60,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 return;
             }
         }
-        
+
         filterChain.doFilter(request, response);
     }
 }
