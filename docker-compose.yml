@@ -9,7 +9,7 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/gestao_vagas
       - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_DATASOURCE_PASSWORD=KD0Uvhu2XJNmSdPaZUGxgGAN6cBOup9P
     depends_on:
       postgres:
         condition: service_healthy
