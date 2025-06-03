@@ -16,14 +16,14 @@ Administrador do Sistema
  Senha: eliel123
  p
 
-{
-  "name": "Tech Solutions",
-  "username": "techsolutions",
-  "email": "contato@techsolutions.com",
-  "password": "senha123456",
-  "website": "https://techsolutions.com",
-  "description": "Empresa especializada em desenvolvimento de software"
-}
+  {
+    "name": "Tech Solutions",
+    "username": "techsolutions",
+    "email": "contato@techsolutions.com",
+    "password": "senha123456",
+    "website": "https://techsolutions.com",
+    "description": "Empresa especializada em desenvolvimento de software"
+  }
 {
   "name": "Innovative Tech",
   "username": "innovativetech",
@@ -70,3 +70,13 @@ Administrador do Sistema
   "password": "senhaSegura123",
   "description": "Desenvolvedor com experiência em Java e Spring Boot."
 }
+{
+    "areaAtuacao": "Desenvolvimento",
+    "requisitos": ["Java", "Spring"],
+    "tipoContrato": "CLT",
+    "localizacao": "São Paulo",
+    "beneficios": ["Vale Refeição", "Plano de Saúde"],
+    "salarioMinimo": 5000,
+    "salarioMaximo": 10000
+}
+p

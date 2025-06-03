@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.eliel.gestao_vagas.modules.candidate.dto.AuthCandidateDTO;
 import br.com.eliel.gestao_vagas.modules.candidate.useCases.AuthCandidateUseCase;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -23,7 +27,62 @@ public class AuthCandidateController {
     private AuthCandidateUseCase authCandidateUseCase;
     
     @PostMapping("/candidate")
-    @Operation(summary = "Autenticação de candidato", description = "Rota responsável por autenticar um candidato")
+    @Operation(
+        summary = "Autenticação de candidato", 
+        description = "Rota responsável por autenticar um candidato e retornar um token JWT para acesso às rotas protegidas"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Autenticação realizada com sucesso",
+            content = @Content(
+                examples = {
+                    @ExampleObject(
+                        name = "Resposta de Sucesso",
+                        value = """
+                        {
+                            "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                            "expires_in": 3600000
+                        }
+                        """
+                    )
+                }
+            )
+        ),
+        @ApiResponse(
+            responseCode = "401", 
+            description = "Credenciais inválidas",
+            content = @Content(
+                examples = {
+                    @ExampleObject(
+                        name = "Erro de Autenticação",
+                        value = """
+                        {
+                            "message": "Usuário ou senha incorretos"
+                        }
+                        """
+                    )
+                }
+            )
+        )
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        description = "Credenciais de autenticação do candidato",
+        required = true,
+        content = @Content(
+            examples = {
+                @ExampleObject(
+                    name = "Credenciais de Candidato",
+                    value = """
+                    {
+                        "username": "joaosilva",
+                        "password": "senha123456"
+                    }
+                    """
+                )
+            }
+        )
+    )
     public ResponseEntity<Object> auth(@Valid @RequestBody AuthCandidateDTO authCandidateDTO) {
         try {
             var result = this.authCandidateUseCase.execute(authCandidateDTO);

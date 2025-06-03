@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.eliel.gestao_vagas.modules.candidate.dto.ProfileCandidateResponseDTO;
 import br.com.eliel.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,8 +30,37 @@ public class ProfileCandidateController {
 
     @GetMapping("/profile")
     @PreAuthorize("hasRole('CANDIDATE')")
-    @Operation(summary = "Perfil do candidato", description = "Essa função é responsável por buscar as informações do perfil do candidato", security = {
-            @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(
+        summary = "Perfil do candidato", 
+        description = "Rota responsável por buscar as informações do perfil do candidato logado",
+        security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Perfil do candidato retornado com sucesso",
+            content = @Content(
+                examples = {
+                    @ExampleObject(
+                        name = "Resposta de Sucesso",
+                        value = """
+                        {
+                            "id": "123e4567-e89b-12d3-a456-426614174000",
+                            "name": "João Silva",
+                            "username": "joaosilva",
+                            "email": "joao@email.com",
+                            "curriculum": "https://linkedin.com/in/joaosilva",
+                            "description": "Desenvolvedor Java com 5 anos de experiência",
+                            "createdAt": "2024-03-20T10:00:00Z"
+                        }
+                        """
+                    )
+                }
+            )
+        ),
+        @ApiResponse(responseCode = "401", description = "Não autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acesso negado"),
+        @ApiResponse(responseCode = "404", description = "Candidato não encontrado")
     })
     public ResponseEntity<ProfileCandidateResponseDTO> profile(HttpServletRequest request) {
         var candidateId = request.getAttribute("candidate_id");

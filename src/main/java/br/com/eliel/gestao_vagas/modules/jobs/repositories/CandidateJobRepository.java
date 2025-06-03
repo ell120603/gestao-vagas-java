@@ -1,5 +1,6 @@
 package br.com.eliel.gestao_vagas.modules.jobs.repositories;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -9,4 +10,6 @@ import br.com.eliel.gestao_vagas.modules.jobs.entites.CandidateJobEntity;
 
 public interface CandidateJobRepository extends JpaRepository<CandidateJobEntity, UUID> {
     Optional<CandidateJobEntity> findByCandidateIdAndJobId(UUID candidateId, UUID jobId);
+    List<CandidateJobEntity> findByCandidateId(UUID candidateId);
+    List<CandidateJobEntity> findByJobId(UUID jobId);
 } 

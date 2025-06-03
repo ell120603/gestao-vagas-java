@@ -3,9 +3,7 @@ package br.com.eliel.gestao_vagas.modules.jobs.useCases;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.eliel.gestao_vagas.modules.candidate.entites.CandidateEntity;
 import br.com.eliel.gestao_vagas.modules.candidate.repositories.CandidateRepository;
-import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.CandidateJobRepository;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.CandidateJobEntity;

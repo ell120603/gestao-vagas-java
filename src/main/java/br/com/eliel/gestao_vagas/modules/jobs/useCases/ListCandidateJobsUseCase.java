@@ -8,18 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.eliel.gestao_vagas.modules.jobs.dto.JobsResponseDTO;
+import br.com.eliel.gestao_vagas.modules.jobs.repositories.CandidateJobRepository;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
 
 @Service
-public class ListCompanyJobsUseCase {
+public class ListCandidateJobsUseCase {
     
+    @Autowired
+    private CandidateJobRepository candidateJobRepository;
+
     @Autowired
     private JobsRepository jobsRepository;
 
-    public List<JobsResponseDTO> execute(UUID companyId) {
-        var jobs = this.jobsRepository.findByCompanyId(companyId);
+    public List<JobsResponseDTO> execute(UUID candidateId) {
+        var candidateJobs = this.candidateJobRepository.findByCandidateId(candidateId);
         
-        return jobs.stream().map(job -> {
+        return candidateJobs.stream().map(candidateJob -> {
+            var job = this.jobsRepository.findById(candidateJob.getJobId())
+                .orElseThrow(() -> new RuntimeException("Vaga não encontrada"));
+            
             return JobsResponseDTO.builder()
                 .id(job.getId())
                 .titulo(job.getTitulo())
@@ -31,7 +38,6 @@ public class ListCompanyJobsUseCase {
                 .companyName(job.getCompany().getName())
                 .salario(job.getSalario())
                 .beneficios(job.getBeneficios())
-                .createdAt(job.getCreatedAt())
                 .build();
         }).collect(Collectors.toList());
     }

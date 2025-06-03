@@ -23,6 +23,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import br.com.eliel.gestao_vagas.modules.company.useCases.UpdateCompanyUseCase;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/company")
@@ -39,7 +43,70 @@ public class CompanyController {
     private UpdateCompanyUseCase updateCompanyUseCase;
     
     @PostMapping("/")
-    @Operation(summary = "Cadastro de empresa", description = "Rota responsável por cadastrar uma nova empresa")
+    @Operation(
+        summary = "Cadastro de empresa", 
+        description = "Rota responsável por cadastrar uma nova empresa no sistema"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Empresa cadastrada com sucesso",
+            content = @Content(
+                examples = {
+                    @ExampleObject(
+                        name = "Resposta de Sucesso",
+                        value = """
+                        {
+                            "id": "123e4567-e89b-12d3-a456-426614174000",
+                            "name": "Tech Solutions",
+                            "username": "techsolutions",
+                            "email": "contato@techsolutions.com",
+                            "website": "https://techsolutions.com",
+                            "description": "Empresa especializada em desenvolvimento de software"
+                        }
+                        """
+                    )
+                }
+            )
+        ),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Dados inválidos fornecidos",
+            content = @Content(
+                examples = {
+                    @ExampleObject(
+                        name = "Erro de Validação",
+                        value = """
+                        {
+                            "message": "Username já existe"
+                        }
+                        """
+                    )
+                }
+            )
+        )
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        description = "Dados da empresa a ser cadastrada",
+        required = true,
+        content = @Content(
+            examples = {
+                @ExampleObject(
+                    name = "Cadastro de Empresa",
+                    value = """
+                    {
+                        "name": "Tech Solutions",
+                        "username": "techsolutions",
+                        "email": "contato@techsolutions.com",
+                        "password": "senha123456",
+                        "website": "https://techsolutions.com",
+                        "description": "Empresa especializada em desenvolvimento de software"
+                    }
+                    """
+                )
+            }
+        )
+    )
     public ResponseEntity<Object> create(@Valid @RequestBody CompanyEntity companyEntity) {
         try {
             var result = this.createCompanyUseCase.execute(companyEntity);
@@ -56,6 +123,28 @@ public class CompanyController {
         description = "Rota responsável por deletar/desativar a própria empresa usando a senha",
         security = { @SecurityRequirement(name = "Bearer Authentication") }
     )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Empresa desativada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Senha incorreta"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acesso negado")
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        description = "Senha da empresa para confirmação da desativação",
+        required = true,
+        content = @Content(
+            examples = {
+                @ExampleObject(
+                    name = "Confirmação de Desativação",
+                    value = """
+                    {
+                        "password": "senha123456"
+                    }
+                    """
+                )
+            }
+        )
+    )
     public ResponseEntity<Object> deactivate(
         @Valid @RequestBody DeactivateCompanyDTO deactivateCompanyDTO,
         Authentication authentication
@@ -69,12 +158,57 @@ public class CompanyController {
         }
     }
 
-        @PutMapping("/")
+    @PutMapping("/")
     @PreAuthorize("hasRole('COMPANY')")
     @Operation(
         summary = "Atualização de dados da empresa", 
         description = "Rota responsável por atualizar os dados da própria empresa",
         security = { @SecurityRequirement(name = "Bearer Authentication") }
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Empresa atualizada com sucesso",
+            content = @Content(
+                examples = {
+                    @ExampleObject(
+                        name = "Resposta de Sucesso",
+                        value = """
+                        {
+                            "id": "123e4567-e89b-12d3-a456-426614174000",
+                            "name": "Tech Solutions Atualizada",
+                            "username": "techsolutions",
+                            "email": "novo@techsolutions.com",
+                            "website": "https://techsolutions.com.br",
+                            "description": "Empresa atualizada especializada em desenvolvimento de software"
+                        }
+                        """
+                    )
+                }
+            )
+        ),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acesso negado")
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        description = "Dados da empresa a serem atualizados",
+        required = true,
+        content = @Content(
+            examples = {
+                @ExampleObject(
+                    name = "Atualização de Empresa",
+                    value = """
+                    {
+                        "name": "Tech Solutions Atualizada",
+                        "email": "novo@techsolutions.com",
+                        "website": "https://techsolutions.com.br",
+                        "description": "Empresa atualizada especializada em desenvolvimento de software"
+                    }
+                    """
+                )
+            }
+        )
     )
     public ResponseEntity<Object> update(
         @Valid @RequestBody UpdateCompanyDTO updateCompanyDTO,

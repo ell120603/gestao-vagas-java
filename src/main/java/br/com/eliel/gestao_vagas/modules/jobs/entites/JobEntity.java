@@ -61,5 +61,6 @@ public class JobEntity {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Builder.Default
     private boolean active = true;
 }
