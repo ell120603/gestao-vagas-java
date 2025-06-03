@@ -33,11 +33,17 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                // Allow access to Swagger UI and API docs
+                .requestMatchers("/api/swagger-ui/**").permitAll()
+                .requestMatchers("/api/v3/api-docs/**").permitAll()
+                
+                // Allow access to public endpoints
                 .requestMatchers("/api/company/**").permitAll()
                 .requestMatchers("/api/candidate/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/job/**").permitAll()
-                .requestMatchers("/api/swagger-ui/**", "/api/v3/api-docs/**").permitAll()
+                
+                // All other requests require authentication
                 .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
@@ -57,7 +63,7 @@ public class SecurityConfig {
             "http://localhost:3000",
             "http://localhost:8080",
             "https://gestao-vagas-java-production.up.railway.app",
-            "https://*.up.railway.app"
+            "https://*.onrender.com"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList(
