@@ -11,10 +11,8 @@ http://localhost:8080/api/swagger-ui/index.html -testar
  Usuário: admin
  Senha: admin
  Database: gestao_vagas
-Administrador do Sistema
- Usuário: admin
- Senha: eliel123
- p
+
+ 
 
   {
     "name": "Tech Solutions",

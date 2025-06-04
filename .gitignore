@@ -24,3 +24,7 @@ build/
 !**/src/test/**/build/
 .vscode/
 .text
+
+# Arquivos de ambiente
+.env
+.env.*
