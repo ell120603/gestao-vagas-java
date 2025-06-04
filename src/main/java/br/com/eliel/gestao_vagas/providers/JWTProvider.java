@@ -25,7 +25,7 @@ public class JWTProvider {
                     .withIssuer("gestao_vagas")
                     .withSubject(subject)
                     .withClaim("roles", roles)
-                    .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
+                    .withExpiresAt(Instant.now().plus(Duration.ofHours(1)))
                     .sign(algorithm);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao gerar token JWT", e);

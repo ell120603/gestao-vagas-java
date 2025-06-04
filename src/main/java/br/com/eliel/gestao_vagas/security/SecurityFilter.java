@@ -33,19 +33,24 @@ public class SecurityFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String header = request.getHeader("Authorization");
+        logger.info("Authorization Header: {}", header);
 
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
+            logger.info("Extracted Token: {}", token);
 
             try {
                 String subject = jwtProvider.validateToken(token);
                 DecodedJWT decodedJWT = jwtProvider.getDecodedJWT(token);
 
-                var roles = decodedJWT.getClaim("roles").asList(String.class);
-                var authorities = roles != null ? roles.stream()
+                var rolesClaim = decodedJWT.getClaim("roles");
+                logger.info("Roles Claim from JWT: {}", rolesClaim);
+
+                var roles = rolesClaim != null ? rolesClaim.asList(String.class) : Collections.<String>emptyList();
+                var authorities = roles.stream()
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                        .toList()
-                        : Collections.<SimpleGrantedAuthority>emptyList();
+                        .toList();
+                logger.info("Authorities added to Security Context: {}", authorities);
 
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(subject, null,
                         authorities);
