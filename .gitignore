@@ -28,3 +28,6 @@ build/
 # Arquivos de ambiente
 .env
 .env.*
+
+# Arquivos Docker
+docker-compose.yml
