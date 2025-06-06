@@ -6,12 +6,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 import java.util.List;
 import java.util.Arrays;
@@ -33,7 +35,7 @@ class SecurityConfigTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         securityConfig = new SecurityConfig();
-        securityConfig.securityFilter = securityFilter; 
+        securityConfig.securityFilter = securityFilter;
     }
 
     @Test
@@ -67,6 +69,7 @@ class SecurityConfigTest {
         when(http.sessionManagement(any())).thenReturn(http);
         when(http.authorizeHttpRequests(any())).thenReturn(http);
         when(http.addFilterBefore(any(), any())).thenReturn(http);
+        when(http.build()).thenReturn(mock(DefaultSecurityFilterChain.class));
 
         SecurityFilterChain chain = securityConfig.securityFilterChain(http);
         assertNotNull(chain);

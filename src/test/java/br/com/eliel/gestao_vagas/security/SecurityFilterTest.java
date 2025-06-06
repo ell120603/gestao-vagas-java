@@ -54,7 +54,7 @@ class SecurityFilterTest {
 
     @Test
     void testDoFilterInternal_NoAuthorizationHeader() throws ServletException, IOException {
-        request.setHeader("Authorization", null);
+        request.addHeader("Authorization", null);
 
         securityFilter.doFilterInternal(request, response, filterChain);
 
@@ -65,7 +65,7 @@ class SecurityFilterTest {
     @Test
     void testDoFilterInternal_ValidAuthorizationHeader() throws ServletException, IOException {
         String token = "validToken";
-        request.setHeader("Authorization", "Bearer " + token);
+        request.addHeader("Authorization", "Bearer " + token);
 
         when(jwtProvider.validateToken(token)).thenReturn("subject");
         when(jwtProvider.getDecodedJWT(token)).thenReturn(decodedJWT);
@@ -87,7 +87,7 @@ class SecurityFilterTest {
     @Test
     void testDoFilterInternal_InvalidToken() throws ServletException, IOException {
         String token = "invalidToken";
-        request.setHeader("Authorization", "Bearer " + token);
+        request.addHeader("Authorization", "Bearer " + token);
 
         when(jwtProvider.validateToken(token)).thenThrow(new RuntimeException("Token inválido"));
 
