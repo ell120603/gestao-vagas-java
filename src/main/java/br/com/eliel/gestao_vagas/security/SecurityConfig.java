@@ -24,8 +24,7 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
     
-    @Autowired
-    private SecurityFilter securityFilter;
+    @Autowired SecurityFilter securityFilter;
     
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

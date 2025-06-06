@@ -9,11 +9,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 import java.util.List;
 import java.util.Arrays;
@@ -73,5 +71,12 @@ class SecurityConfigTest {
 
         SecurityFilterChain chain = securityConfig.securityFilterChain(http);
         assertNotNull(chain);
+
+        
+        verify(http, times(1)).csrf(any());
+        verify(http, times(1)).cors(any());
+        verify(http, times(1)).sessionManagement(any());
+        verify(http, times(1)).authorizeHttpRequests(any());
+        verify(http, times(1)).addFilterBefore(any(), any());
     }
 }

@@ -25,8 +25,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityFilter.class);
 
-    @Autowired
-    private JWTProvider jwtProvider;
+    @Autowired JWTProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
