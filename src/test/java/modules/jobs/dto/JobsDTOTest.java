@@ -1,5 +1,6 @@
-package br.com.eliel.gestao_vagas.modules.jobs.dto;
+package modules.jobs.dto;
 
+import br.com.eliel.gestao_vagas.modules.jobs.dto.JobsDTO;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.TipoContrato;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -7,8 +8,6 @@ import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,9 +28,8 @@ class JobsDTOTest {
         JobsDTO dto = new JobsDTO();
         
         Set<ConstraintViolation<JobsDTO>> violations = validator.validate(dto);
-        assertEquals(5, violations.size()); // 5 campos obrigatórios
-        
-        // Verifica mensagens de erro
+        assertEquals(5, violations.size()); 
+
         assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("O título é obrigatório")));
         assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("A descrição é obrigatória")));
         assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("A área de atuação é obrigatória")));

@@ -32,7 +32,7 @@ class ExceptionHandlerControllerTest {
 
         ResponseEntity<List<ErrorMessageDTO>> response = controller.methodArgumentNotValidException(ex);
 
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(400, response.getStatusCode().value());
         List<ErrorMessageDTO> body = response.getBody();
         assertNotNull(body);
         assertEquals(2, body.size());

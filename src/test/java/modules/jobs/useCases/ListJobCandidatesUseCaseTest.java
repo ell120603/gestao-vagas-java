@@ -1,4 +1,4 @@
-package br.com.eliel.gestao_vagas.modules.jobs.useCases;
+package modules.jobs.useCases;
 
 import br.com.eliel.gestao_vagas.exceptions.AuthenticationException;
 import br.com.eliel.gestao_vagas.modules.candidate.entites.CandidateEntity;
@@ -9,6 +9,7 @@ import br.com.eliel.gestao_vagas.modules.jobs.entites.CandidateJobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.CandidateJobRepository;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.ListJobCandidatesUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,7 +50,9 @@ class ListJobCandidatesUseCaseTest {
         jobId = UUID.randomUUID();
         companyId = UUID.randomUUID();
         candidateId = UUID.randomUUID();
-        company = CompanyEntity.builder().id(companyId).name("Empresa X").build();
+        company = new CompanyEntity();
+        company.setId(companyId);
+        company.setName("Empresa X");
         jobEntity = JobEntity.builder()
                 .id(jobId)
                 .company(company)
@@ -59,13 +62,12 @@ class ListJobCandidatesUseCaseTest {
                 .candidateId(candidateId)
                 .jobId(jobId)
                 .build();
-        candidateEntity = CandidateEntity.builder()
-                .id(candidateId)
-                .name("Renata")
-                .email("renata@email.com")
-                .username("renata123")
-                .description("Descrição")
-                .build();
+        candidateEntity = new CandidateEntity();
+        candidateEntity.setId(candidateId);
+        candidateEntity.setName("Renata");
+        candidateEntity.setEmail("renata@email.com");
+        candidateEntity.setUsername("renata123");
+        candidateEntity.setDescription("Descrição");
     }
 
     @Test
@@ -103,7 +105,8 @@ class ListJobCandidatesUseCaseTest {
 
     @Test
     void testExecuteNoPermissionThrowsAuthenticationException() {
-        CompanyEntity otherCompany = CompanyEntity.builder().id(UUID.randomUUID()).build();
+        CompanyEntity otherCompany = new CompanyEntity();
+        otherCompany.setId(UUID.randomUUID());
         JobEntity jobOther = JobEntity.builder().id(jobId).company(otherCompany).build();
         when(jobsRepository.findById(jobId)).thenReturn(Optional.of(jobOther));
 

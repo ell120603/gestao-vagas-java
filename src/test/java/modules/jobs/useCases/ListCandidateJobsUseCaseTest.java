@@ -1,4 +1,4 @@
-package br.com.eliel.gestao_vagas.modules.jobs.useCases;
+package modules.jobs.useCases;
 
 import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.dto.JobsResponseDTO;
@@ -7,6 +7,7 @@ import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.TipoContrato;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.CandidateJobRepository;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.ListCandidateJobsUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +44,9 @@ class ListCandidateJobsUseCaseTest {
     void setUp() {
         candidateId = UUID.randomUUID();
         jobId = UUID.randomUUID();
-        company = CompanyEntity.builder().id(UUID.randomUUID()).name("Empresa X").build();
+        company = new CompanyEntity();
+        company.setId(UUID.randomUUID());
+        company.setName("Empresa X");
         jobEntity = JobEntity.builder()
                 .id(jobId)
                 .titulo("Desenvolvedor")

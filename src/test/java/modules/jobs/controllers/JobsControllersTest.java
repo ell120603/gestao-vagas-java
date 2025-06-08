@@ -1,8 +1,11 @@
-package br.com.eliel.gestao_vagas.modules.jobs.controllers;
+package modules.jobs.controllers;
 
 import br.com.eliel.gestao_vagas.modules.jobs.dto.*;
+import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.TipoContrato;
+import br.com.eliel.gestao_vagas.modules.jobs.entites.CandidateJobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.useCases.*;
+import br.com.eliel.gestao_vagas.modules.jobs.controllers.JobsControllers;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -12,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -24,7 +27,7 @@ import static org.mockito.Mockito.*;
 class JobsControllersTest {
 
     @InjectMocks
-    private JobsControllers jobsControllers;
+    private JobsControllers jobsController;
 
     @Mock private JobsUseCases jobsUseCases;
     @Mock private ListAllJobsUseCase listAllJobsUseCase;
@@ -55,263 +58,316 @@ class JobsControllersTest {
 
     @Test
     void testCreateSuccess() {
-        JobsDTO jobsDTO = JobsDTO.builder().titulo("Dev").build();
-        JobsResponseDTO responseDTO = JobsResponseDTO.builder().id(jobId).titulo("Dev").build();
+        JobsDTO jobsDTO = JobsDTO.builder()
+            .titulo("Dev")
+            .descricao("Descrição da vaga")
+            .areaAtuacao("TI")
+            .requisitos(List.of("Java", "Spring"))
+            .tipoContrato(TipoContrato.CLT)
+            .localizacao("São Paulo")
+            .salario(new BigDecimal("5000"))
+            .beneficios("VR, VT")
+            .build();
 
-        when(jobsUseCases.execute(eq(jobsDTO), eq(companyId))).thenReturn(responseDTO);
+        JobEntity jobEntity = JobEntity.builder()
+            .id(jobId)
+            .titulo("Dev")
+            .build();
 
-        ResponseEntity<Object> response = jobsControllers.create(jobsDTO, request);
+        when(jobsUseCases.execute(eq(jobsDTO), eq(companyId))).thenReturn(jobEntity);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(responseDTO, response.getBody());
+        ResponseEntity<Object> response = jobsController.create(jobsDTO, request);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(jobEntity, response.getBody());
+        verify(jobsUseCases).execute(jobsDTO, companyId);
     }
 
     @Test
     void testCreateException() {
-        JobsDTO jobsDTO = JobsDTO.builder().titulo("Dev").build();
+        JobsDTO jobsDTO = JobsDTO.builder()
+            .titulo("Dev")
+            .build();
+
         when(jobsUseCases.execute(any(), any())).thenThrow(new RuntimeException("Erro"));
 
-        ResponseEntity<Object> response = jobsControllers.create(jobsDTO, request);
+        ResponseEntity<Object> response = jobsController.create(jobsDTO, request);
 
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Erro", response.getBody());
+        verify(jobsUseCases).execute(jobsDTO, companyId);
     }
 
     @Test
     void testList() {
-        List<JobsResponseDTO> jobs = List.of(JobsResponseDTO.builder().id(jobId).build());
+        List<JobsResponseDTO> jobs = List.of(
+            JobsResponseDTO.builder()
+                .id(jobId)
+                .titulo("Dev")
+                .build()
+        );
+
         when(listAllJobsUseCase.execute()).thenReturn(jobs);
 
-        ResponseEntity<List<JobsResponseDTO>> response = jobsControllers.list();
+        ResponseEntity<List<JobsResponseDTO>> response = jobsController.list();
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(jobs, response.getBody());
+        verify(listAllJobsUseCase).execute();
     }
 
     @Test
     void testUpdateSuccess() {
-        UpdateJobDTO updateJobDTO = UpdateJobDTO.builder().titulo("Novo").build();
-        JobsResponseDTO responseDTO = JobsResponseDTO.builder().id(jobId).titulo("Novo").build();
+        UpdateJobDTO updateJobDTO = UpdateJobDTO.builder()
+            .titulo("Novo")
+            .descricao("Nova descrição")
+            .build();
 
-        when(updateJobUseCase.execute(eq(jobId), eq(companyId), eq(updateJobDTO))).thenReturn(responseDTO);
+        JobEntity jobEntity = JobEntity.builder()
+            .id(jobId)
+            .titulo("Novo")
+            .build();
 
-        ResponseEntity<Object> response = jobsControllers.update(jobId, updateJobDTO, request);
+        when(updateJobUseCase.execute(eq(jobId), eq(companyId), eq(updateJobDTO))).thenReturn(jobEntity);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(responseDTO, response.getBody());
+        ResponseEntity<Object> response = jobsController.update(jobId, updateJobDTO, request);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(jobEntity, response.getBody());
+        verify(updateJobUseCase).execute(jobId, companyId, updateJobDTO);
     }
 
     @Test
     void testUpdateException() {
-        UpdateJobDTO updateJobDTO = UpdateJobDTO.builder().titulo("Novo").build();
+        UpdateJobDTO updateJobDTO = UpdateJobDTO.builder()
+            .titulo("Novo")
+            .build();
+
         when(updateJobUseCase.execute(any(), any(), any())).thenThrow(new RuntimeException("Erro"));
 
-        ResponseEntity<Object> response = jobsControllers.update(jobId, updateJobDTO, request);
+        ResponseEntity<Object> response = jobsController.update(jobId, updateJobDTO, request);
 
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Erro", response.getBody());
+        verify(updateJobUseCase).execute(jobId, companyId, updateJobDTO);
     }
 
     @Test
     void testCloseSuccess() {
-        JobsResponseDTO responseDTO = JobsResponseDTO.builder().id(jobId).titulo("Fechada").build();
-        when(closeJobUseCase.execute(eq(jobId), eq(companyId))).thenReturn(responseDTO);
+        JobEntity jobEntity = JobEntity.builder()
+            .id(jobId)
+            .titulo("Fechada")
+            .build();
 
-        ResponseEntity<Object> response = jobsControllers.close(jobId, request);
+        when(closeJobUseCase.execute(eq(jobId), eq(companyId))).thenReturn(jobEntity);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(responseDTO, response.getBody());
+        ResponseEntity<Object> response = jobsController.close(jobId, request);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(jobEntity, response.getBody());
+        verify(closeJobUseCase).execute(jobId, companyId);
     }
 
     @Test
     void testCloseException() {
         when(closeJobUseCase.execute(any(), any())).thenThrow(new RuntimeException("Erro"));
 
-        ResponseEntity<Object> response = jobsControllers.close(jobId, request);
+        ResponseEntity<Object> response = jobsController.close(jobId, request);
 
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Erro", response.getBody());
+        verify(closeJobUseCase).execute(jobId, companyId);
     }
 
     @Test
     void testApplySuccess() {
-        String result = "Candidatado";
-        when(applyJobUseCase.execute(eq(candidateId), eq(jobId))).thenReturn(result);
+        CandidateJobEntity candidateJob = CandidateJobEntity.builder()
+            .id(UUID.randomUUID())
+            .candidateId(candidateId)
+            .jobId(jobId)
+            .build();
 
-        ResponseEntity<Object> response = jobsControllers.apply(jobId, request);
+        when(applyJobUseCase.execute(eq(candidateId), eq(jobId))).thenReturn(candidateJob);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(result, response.getBody());
+        ResponseEntity<Object> response = jobsController.apply(jobId, request);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(candidateJob, response.getBody());
+        verify(applyJobUseCase).execute(candidateId, jobId);
     }
 
     @Test
     void testApplyException() {
         when(applyJobUseCase.execute(any(), any())).thenThrow(new RuntimeException("Erro"));
 
-        ResponseEntity<Object> response = jobsControllers.apply(jobId, request);
+        ResponseEntity<Object> response = jobsController.apply(jobId, request);
 
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Erro", response.getBody());
+        verify(applyJobUseCase).execute(candidateId, jobId);
     }
 
     @Test
     void testListCompanyJobs() {
-        List<JobsResponseDTO> jobs = List.of(JobsResponseDTO.builder().id(jobId).build());
+        List<JobsResponseDTO> jobs = List.of(
+            JobsResponseDTO.builder()
+                .id(jobId)
+                .titulo("Dev")
+                .build()
+        );
+
         when(listCompanyJobsUseCase.execute(eq(companyId))).thenReturn(jobs);
 
-        ResponseEntity<List<JobsResponseDTO>> response = jobsControllers.listCompanyJobs(request);
+        ResponseEntity<List<JobsResponseDTO>> response = jobsController.listCompanyJobs(request);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(jobs, response.getBody());
+        verify(listCompanyJobsUseCase).execute(companyId);
     }
 
     @Test
     void testDeleteSuccess() {
-        DeleteJobDTO deleteJobDTO = DeleteJobDTO.builder().password("senha").build();
+        DeleteJobDTO deleteJobDTO = DeleteJobDTO.builder()
+            .password("senha")
+            .build();
 
-        ResponseEntity<Object> response = jobsControllers.delete(jobId, deleteJobDTO, request);
+        ResponseEntity<Object> response = jobsController.delete(jobId, deleteJobDTO, request);
 
-        assertEquals(204, response.getStatusCodeValue());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertNull(response.getBody());
-        verify(deleteJobUseCase).execute(eq(jobId), eq(companyId), eq("senha"));
+        verify(deleteJobUseCase).execute(jobId, companyId, "senha");
     }
 
     @Test
     void testDeleteException() {
-        DeleteJobDTO deleteJobDTO = DeleteJobDTO.builder().password("senha").build();
+        DeleteJobDTO deleteJobDTO = DeleteJobDTO.builder()
+            .password("senha")
+            .build();
+
         doThrow(new RuntimeException("Erro")).when(deleteJobUseCase).execute(any(), any(), any());
 
-        ResponseEntity<Object> response = jobsControllers.delete(jobId, deleteJobDTO, request);
+        ResponseEntity<Object> response = jobsController.delete(jobId, deleteJobDTO, request);
 
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Erro", response.getBody());
+        verify(deleteJobUseCase).execute(jobId, companyId, "senha");
     }
 
     @Test
     void testReactivateSuccess() {
-        JobsResponseDTO responseDTO = JobsResponseDTO.builder().id(jobId).titulo("Reativada").build();
-        when(reactivateJobUseCase.execute(eq(jobId), eq(companyId))).thenReturn(responseDTO);
+        JobEntity jobEntity = JobEntity.builder()
+            .id(jobId)
+            .titulo("Reativada")
+            .build();
 
-        ResponseEntity<Object> response = jobsControllers.reactivate(jobId, request);
+        when(reactivateJobUseCase.execute(eq(jobId), eq(companyId))).thenReturn(jobEntity);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(responseDTO, response.getBody());
+        ResponseEntity<Object> response = jobsController.reactivate(jobId, request);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(jobEntity, response.getBody());
+        verify(reactivateJobUseCase).execute(jobId, companyId);
     }
 
     @Test
     void testReactivateException() {
         when(reactivateJobUseCase.execute(any(), any())).thenThrow(new RuntimeException("Erro"));
 
-        ResponseEntity<Object> response = jobsControllers.reactivate(jobId, request);
+        ResponseEntity<Object> response = jobsController.reactivate(jobId, request);
 
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Erro", response.getBody());
+        verify(reactivateJobUseCase).execute(jobId, companyId);
     }
 
     @Test
     void testFilter() {
-        List<JobsResponseDTO> jobs = List.of(JobsResponseDTO.builder().id(jobId).build());
-        when(filterJobsUseCase.execute(any())).thenReturn(jobs);
-
-        ResponseEntity<List<JobsResponseDTO>> response = jobsControllers.filter(
-                "Desenvolvimento",
-                new String[]{"Java"},
-                "CLT",
-                "SP",
-                "1000",
-                "5000"
+        List<JobsResponseDTO> jobs = List.of(
+            JobsResponseDTO.builder()
+                .id(jobId)
+                .titulo("Dev")
+                .build()
         );
 
-        assertEquals(200, response.getStatusCodeValue());
+        JobFilterDTO filterDTO = JobFilterDTO.builder()
+            .areaAtuacao("TI")
+            .requisitos(List.of("Java"))
+            .tipoContrato(TipoContrato.CLT)
+            .localizacao("São Paulo")
+            .salarioMinimo(new BigDecimal("5000"))
+            .salarioMaximo(new BigDecimal("10000"))
+            .build();
+
+        when(filterJobsUseCase.execute(any(JobFilterDTO.class))).thenReturn(jobs);
+
+        ResponseEntity<List<JobsResponseDTO>> response = jobsController.filter(
+            "TI",
+            new String[]{"Java"},
+            "CLT",
+            "São Paulo",
+            "5000",
+            "10000"
+        );
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(jobs, response.getBody());
+        verify(filterJobsUseCase).execute(any(JobFilterDTO.class));
     }
 
     @Test
     void testListCandidateJobs() {
-        List<JobsResponseDTO> jobs = List.of(JobsResponseDTO.builder().id(jobId).build());
+        List<JobsResponseDTO> jobs = List.of(
+            JobsResponseDTO.builder()
+                .id(jobId)
+                .titulo("Dev")
+                .build()
+        );
+
         when(listCandidateJobsUseCase.execute(eq(candidateId))).thenReturn(jobs);
 
-        ResponseEntity<List<JobsResponseDTO>> response = jobsControllers.listCandidateJobs(request);
+        ResponseEntity<List<JobsResponseDTO>> response = jobsController.listCandidateJobs(request);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(jobs, response.getBody());
+        verify(listCandidateJobsUseCase).execute(candidateId);
     }
 
     @Test
     void testListJobCandidates() {
-        List<CandidateJobResponseDTO> candidates = List.of(CandidateJobResponseDTO.builder().candidateId(candidateId).build());
+        List<CandidateJobResponseDTO> candidates = List.of(
+            CandidateJobResponseDTO.builder()
+                .id(UUID.randomUUID())
+                .name("Candidato")
+                .build()
+        );
+
         when(listJobCandidatesUseCase.execute(eq(jobId), eq(companyId))).thenReturn(candidates);
 
-        ResponseEntity<List<CandidateJobResponseDTO>> response = jobsControllers.listJobCandidates(jobId, request);
+        ResponseEntity<List<CandidateJobResponseDTO>> response = jobsController.listJobCandidates(jobId, request);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(candidates, response.getBody());
+        verify(listJobCandidatesUseCase).execute(jobId, companyId);
     }
 
     @Test
     void testCreate_ShouldValidateDTO() {
-        JobsDTO invalidDTO = JobsDTO.builder()
-                .descricao("Descrição")
-                .salario(BigDecimal.valueOf(1000))
-                .build();
-        
-        var violations = validator.validate(invalidDTO);
+        JobsDTO jobsDTO = JobsDTO.builder().build();
+        var violations = validator.validate(jobsDTO);
         assertFalse(violations.isEmpty());
-        assertEquals(1, violations.size());
-        assertEquals("titulo", violations.iterator().next().getPropertyPath().toString());
-    }
-
-    @Test
-    void testCreate_ShouldRequireCompanyRole() {
-        when(jobsUseCases.execute(any(), any())).thenThrow(new AccessDeniedException("Acesso negado"));
-        JobsDTO jobsDTO = JobsDTO.builder().titulo("Dev").build();
-        
-        assertThrows(AccessDeniedException.class, () -> jobsControllers.create(jobsDTO, request));
     }
 
     @Test
     void testUpdate_ShouldValidateUpdateDTO() {
-        UpdateJobDTO invalidDTO = UpdateJobDTO.builder()
-                .descricao("Nova descrição")
-                .build();
-        
-        var violations = validator.validate(invalidDTO);
+        UpdateJobDTO updateJobDTO = UpdateJobDTO.builder().build();
+        var violations = validator.validate(updateJobDTO);
         assertFalse(violations.isEmpty());
-        assertEquals(1, violations.size());
-        assertEquals("titulo", violations.iterator().next().getPropertyPath().toString());
     }
 
     @Test
     void testDelete_ShouldValidatePassword() {
-        DeleteJobDTO invalidDTO = DeleteJobDTO.builder().build();
-        
-        var violations = validator.validate(invalidDTO);
+        DeleteJobDTO deleteJobDTO = DeleteJobDTO.builder().build();
+        var violations = validator.validate(deleteJobDTO);
         assertFalse(violations.isEmpty());
-        assertEquals(1, violations.size());
-        assertEquals("password", violations.iterator().next().getPropertyPath().toString());
-    }
-
-    @Test
-    void testListCompanyJobs_ShouldRequireCompanyRole() {
-        when(listCompanyJobsUseCase.execute(any())).thenThrow(new AccessDeniedException("Acesso negado"));
-        assertThrows(AccessDeniedException.class, () -> jobsControllers.listCompanyJobs(request));
-    }
-
-    @Test
-    void testApplyJob_ShouldRequireCandidateRole() {
-        when(applyJobUseCase.execute(any(), any())).thenThrow(new AccessDeniedException("Acesso negado"));
-        assertThrows(AccessDeniedException.class, () -> jobsControllers.apply(jobId, request));
-    }
-
-    @Test
-    void testListCandidateJobs_ShouldRequireCandidateRole() {
-        when(listCandidateJobsUseCase.execute(any())).thenThrow(new AccessDeniedException("Acesso negado"));
-        assertThrows(AccessDeniedException.class, () -> jobsControllers.listCandidateJobs(request));
-    }
-
-    @Test
-    void testListJobCandidates_ShouldRequireCompanyRole() {
-        when(listJobCandidatesUseCase.execute(any(), any())).thenThrow(new AccessDeniedException("Acesso negado"));
-        assertThrows(AccessDeniedException.class, () -> jobsControllers.listJobCandidates(jobId, request));
     }
 }

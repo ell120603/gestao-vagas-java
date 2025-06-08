@@ -1,8 +1,9 @@
-package br.com.eliel.gestao_vagas.modules.jobs.useCases;
+package modules.jobs.useCases;
 
 import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.CloseJobUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +35,8 @@ class CloseJobUseCaseTest {
     void setUp() {
         jobId = UUID.randomUUID();
         companyId = UUID.randomUUID();
-        company = CompanyEntity.builder().id(companyId).build();
+        company = new CompanyEntity();
+        company.setId(companyId);
         activeJob = JobEntity.builder()
                 .id(jobId)
                 .company(company)
@@ -68,7 +70,8 @@ class CloseJobUseCaseTest {
     @Test
     void shouldThrowExceptionWhenCompanyNotAuthorized() {
         UUID otherCompanyId = UUID.randomUUID();
-        CompanyEntity otherCompany = CompanyEntity.builder().id(otherCompanyId).build();
+        CompanyEntity otherCompany = new CompanyEntity();
+        otherCompany.setId(otherCompanyId);
         JobEntity job = JobEntity.builder()
                 .id(jobId)
                 .company(otherCompany)

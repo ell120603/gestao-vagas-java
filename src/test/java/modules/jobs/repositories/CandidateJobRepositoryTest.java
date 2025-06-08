@@ -1,6 +1,7 @@
-package br.com.eliel.gestao_vagas.modules.jobs.repositories;
+package modules.jobs.repositories;
 
 import br.com.eliel.gestao_vagas.modules.jobs.entites.CandidateJobEntity;
+import br.com.eliel.gestao_vagas.modules.jobs.repositories.CandidateJobRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

@@ -1,5 +1,6 @@
-package br.com.eliel.gestao_vagas.modules.jobs.dto;
+package modules.jobs.dto;
 
+import br.com.eliel.gestao_vagas.modules.jobs.dto.CandidateJobResponseDTO;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

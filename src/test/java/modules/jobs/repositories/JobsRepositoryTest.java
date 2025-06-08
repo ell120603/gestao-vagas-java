@@ -1,6 +1,8 @@
-package br.com.eliel.gestao_vagas.modules.jobs.repositories;
+package modules.jobs.repositories;
 
 import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
+import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
+import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -21,8 +23,11 @@ class JobsRepositoryTest {
     @Test
     void testFindByCompanyId() {
         UUID companyId = UUID.randomUUID();
-        JobEntity job1 = JobEntity.builder().id(UUID.randomUUID()).companyId(companyId).build();
-        JobEntity job2 = JobEntity.builder().id(UUID.randomUUID()).companyId(companyId).build();
+        CompanyEntity company = new CompanyEntity();
+        company.setId(companyId);
+
+        JobEntity job1 = JobEntity.builder().id(UUID.randomUUID()).company(company).build();
+        JobEntity job2 = JobEntity.builder().id(UUID.randomUUID()).company(company).build();
         List<JobEntity> jobs = List.of(job1, job2);
 
         when(jobsRepository.findByCompanyId(companyId)).thenReturn(jobs);
@@ -30,8 +35,8 @@ class JobsRepositoryTest {
         List<JobEntity> result = jobsRepository.findByCompanyId(companyId);
 
         assertEquals(2, result.size());
-        assertEquals(companyId, result.get(0).getCompanyId());
-        assertEquals(companyId, result.get(1).getCompanyId());
+        assertEquals(companyId, result.get(0).getCompany().getId());
+        assertEquals(companyId, result.get(1).getCompany().getId());
     }
 
     @Test

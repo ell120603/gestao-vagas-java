@@ -1,7 +1,8 @@
-```java
-package br.com.eliel.gestao_vagas.modules.jobs.entites;
+package modules.jobs.entites;
 
 import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
+import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
+import br.com.eliel.gestao_vagas.modules.jobs.entites.TipoContrato;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -29,7 +30,8 @@ class JobEntityTest {
     @Test
     void testBuilderAndGetters() {
         UUID id = UUID.randomUUID();
-        CompanyEntity company = CompanyEntity.builder().id(UUID.randomUUID()).build();
+        CompanyEntity company = new CompanyEntity();
+        company.setId(UUID.randomUUID());
         LocalDateTime now = LocalDateTime.now();
 
         JobEntity job = JobEntity.builder()
@@ -65,7 +67,8 @@ class JobEntityTest {
     void testNoArgsConstructorAndSetters() {
         JobEntity job = new JobEntity();
         UUID id = UUID.randomUUID();
-        CompanyEntity company = CompanyEntity.builder().id(UUID.randomUUID()).build();
+        CompanyEntity company = new CompanyEntity();
+        company.setId(UUID.randomUUID());
         LocalDateTime now = LocalDateTime.now();
 
         job.setId(id);
@@ -98,7 +101,8 @@ class JobEntityTest {
     @Test
     void testAllArgsConstructor() {
         UUID id = UUID.randomUUID();
-        CompanyEntity company = CompanyEntity.builder().id(UUID.randomUUID()).build();
+        CompanyEntity company = new CompanyEntity();
+        company.setId(UUID.randomUUID());
         LocalDateTime now = LocalDateTime.now();
 
         JobEntity job = new JobEntity(

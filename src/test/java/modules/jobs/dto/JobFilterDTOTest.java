@@ -1,5 +1,6 @@
-package br.com.eliel.gestao_vagas.modules.jobs.dto;
+package modules.jobs.dto;
 
+import br.com.eliel.gestao_vagas.modules.jobs.dto.JobFilterDTO;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.TipoContrato;
 import org.junit.jupiter.api.Test;
 

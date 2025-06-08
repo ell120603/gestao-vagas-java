@@ -1,10 +1,11 @@
-package br.com.eliel.gestao_vagas.modules.jobs.useCases;
+package modules.jobs.useCases;
 
 import br.com.eliel.gestao_vagas.exceptions.AuthenticationException;
 import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
 import br.com.eliel.gestao_vagas.modules.company.repositories.CompanyRepository;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.DeleteJobUseCase;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,17 +50,22 @@ class DeleteJobUseCaseTest {
         companyId = UUID.randomUUID();
         correctPassword = "senha123";
         wrongPassword = "senhaErrada";
-        company = CompanyEntity.builder()
-                .id(companyId)
-                .password("encodedPassword")
-                .build();
+        
+        company = new CompanyEntity();
+        company.setId(companyId);
+        company.setPassword("encodedPassword");
+        
         validJob = JobEntity.builder()
                 .id(jobId)
                 .company(company)
                 .build();
+                
+        CompanyEntity otherCompany = new CompanyEntity();
+        otherCompany.setId(UUID.randomUUID());
+        
         unauthorizedJob = JobEntity.builder()
                 .id(jobId)
-                .company(CompanyEntity.builder().id(UUID.randomUUID()).build())
+                .company(otherCompany)
                 .build();
     }
 

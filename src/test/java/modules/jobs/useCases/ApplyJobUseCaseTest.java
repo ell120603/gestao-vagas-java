@@ -1,9 +1,12 @@
-package br.com.eliel.gestao_vagas.modules.jobs.useCases;
+package modules.jobs.useCases;
 
+import br.com.eliel.gestao_vagas.modules.candidate.entites.CandidateEntity;
 import br.com.eliel.gestao_vagas.modules.candidate.repositories.CandidateRepository;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.CandidateJobEntity;
+import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.CandidateJobRepository;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.ApplyJobUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,17 +37,33 @@ class ApplyJobUseCaseTest {
 
     private UUID candidateId;
     private UUID jobId;
+    private CandidateEntity candidate;
+    private JobEntity job;
 
     @BeforeEach
     void setUp() {
         candidateId = UUID.randomUUID();
         jobId = UUID.randomUUID();
+        
+        candidate = new CandidateEntity();
+        candidate.setId(candidateId);
+        candidate.setName("Candidato Teste");
+        candidate.setUsername("candidato.teste");
+        candidate.setEmail("candidato@teste.com");
+        candidate.setPassword("senha123456");
+        candidate.setDescription("Descrição do candidato");
+            
+        job = JobEntity.builder()
+            .id(jobId)
+            .titulo("Vaga Teste")
+            .descricao("Descrição da vaga")
+            .build();
     }
 
     @Test
     void shouldApplyJobSuccessfully() {
-        when(candidateRepository.findById(candidateId)).thenReturn(Optional.of(new Object()));
-        when(jobsRepository.findById(jobId)).thenReturn(Optional.of(new Object()));
+        when(candidateRepository.findById(candidateId)).thenReturn(Optional.of(candidate));
+        when(jobsRepository.findById(jobId)).thenReturn(Optional.of(job));
         when(candidateJobRepository.findByCandidateIdAndJobId(candidateId, jobId)).thenReturn(Optional.empty());
 
         CandidateJobEntity savedEntity = CandidateJobEntity.builder()
@@ -57,9 +76,15 @@ class ApplyJobUseCaseTest {
 
         CandidateJobEntity result = applyJobUseCase.execute(candidateId, jobId);
 
+        assertNotNull(result);
         assertNotNull(result.getId());
         assertEquals(candidateId, result.getCandidateId());
         assertEquals(jobId, result.getJobId());
+        
+        verify(candidateRepository).findById(candidateId);
+        verify(jobsRepository).findById(jobId);
+        verify(candidateJobRepository).findByCandidateIdAndJobId(candidateId, jobId);
+        verify(candidateJobRepository).save(any(CandidateJobEntity.class));
     }
 
     @Test
@@ -77,7 +102,7 @@ class ApplyJobUseCaseTest {
 
     @Test
     void shouldThrowExceptionWhenJobNotFound() {
-        when(candidateRepository.findById(candidateId)).thenReturn(Optional.of(new Object()));
+        when(candidateRepository.findById(candidateId)).thenReturn(Optional.of(candidate));
         when(jobsRepository.findById(jobId)).thenReturn(Optional.empty());
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
@@ -92,10 +117,17 @@ class ApplyJobUseCaseTest {
 
     @Test
     void shouldThrowExceptionWhenCandidateAlreadyApplied() {
-        when(candidateRepository.findById(candidateId)).thenReturn(Optional.of(new Object()));
-        when(jobsRepository.findById(jobId)).thenReturn(Optional.of(new Object()));
+        when(candidateRepository.findById(candidateId)).thenReturn(Optional.of(candidate));
+        when(jobsRepository.findById(jobId)).thenReturn(Optional.of(job));
+        
+        CandidateJobEntity existingApplication = CandidateJobEntity.builder()
+            .id(UUID.randomUUID())
+            .candidateId(candidateId)
+            .jobId(jobId)
+            .build();
+            
         when(candidateJobRepository.findByCandidateIdAndJobId(candidateId, jobId))
-                .thenReturn(Optional.of(new CandidateJobEntity()));
+                .thenReturn(Optional.of(existingApplication));
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             applyJobUseCase.execute(candidateId, jobId);

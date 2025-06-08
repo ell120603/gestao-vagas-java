@@ -1,10 +1,11 @@
-package br.com.eliel.gestao_vagas.modules.jobs.useCases;
+package modules.jobs.useCases;
 
 import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.dto.JobsResponseDTO;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.TipoContrato;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.ListAllJobsUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -33,10 +35,9 @@ class ListAllJobsUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        CompanyEntity company = CompanyEntity.builder()
-                .id(UUID.randomUUID())
-                .name("Tech Solutions")
-                .build();
+        CompanyEntity company = new CompanyEntity();
+        company.setId(UUID.randomUUID());
+        company.setName("Tech Solutions");
 
         activeJob1 = JobEntity.builder()
                 .id(UUID.randomUUID())

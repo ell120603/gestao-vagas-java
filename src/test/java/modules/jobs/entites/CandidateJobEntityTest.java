@@ -1,5 +1,5 @@
-package br.com.eliel.gestao_vagas.modules.jobs.entites;
-
+package modules.jobs.entites;
+import br.com.eliel.gestao_vagas.modules.jobs.entites.CandidateJobEntity;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;

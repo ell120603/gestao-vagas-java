@@ -1,9 +1,10 @@
-package br.com.eliel.gestao_vagas.modules.jobs.useCases;
+package modules.jobs.useCases;
 
 import br.com.eliel.gestao_vagas.exceptions.AuthenticationException;
 import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.entites.JobEntity;
 import br.com.eliel.gestao_vagas.modules.jobs.repositories.JobsRepository;
+import br.com.eliel.gestao_vagas.modules.jobs.useCases.ReactivateJobUseCase;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,8 @@ class ReactivateJobUseCaseTest {
     void setUp() {
         jobId = UUID.randomUUID();
         companyId = UUID.randomUUID();
-        company = CompanyEntity.builder().id(companyId).build();
+        company = new CompanyEntity();
+        company.setId(companyId);
         jobEntity = JobEntity.builder()
                 .id(jobId)
                 .company(company)
@@ -68,7 +70,8 @@ class ReactivateJobUseCaseTest {
 
     @Test
     void testExecuteNoPermission() {
-        CompanyEntity otherCompany = CompanyEntity.builder().id(UUID.randomUUID()).build();
+        CompanyEntity otherCompany = new CompanyEntity();
+        otherCompany.setId(UUID.randomUUID());
         JobEntity jobOther = JobEntity.builder()
                 .id(jobId)
                 .company(otherCompany)

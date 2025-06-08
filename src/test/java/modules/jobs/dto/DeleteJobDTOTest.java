@@ -1,5 +1,6 @@
-package br.com.eliel.gestao_vagas.modules.jobs.dto;
+package modules.jobs.dto;
 
+import br.com.eliel.gestao_vagas.modules.jobs.dto.DeleteJobDTO;
 import org.junit.jupiter.api.Test;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;

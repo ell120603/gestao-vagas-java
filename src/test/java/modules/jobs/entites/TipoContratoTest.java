@@ -1,5 +1,6 @@
-package br.com.eliel.gestao_vagas.modules.jobs.entites;
+package modules.jobs.entites;
 
+import br.com.eliel.gestao_vagas.modules.jobs.entites.TipoContrato;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
