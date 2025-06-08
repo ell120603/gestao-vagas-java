@@ -54,7 +54,7 @@ class SecurityFilterTest {
 
     @Test
     void testDoFilterInternal_NoAuthorizationHeader() throws ServletException, IOException {
-        request.addHeader("Authorization", null);
+        // Não adiciona nenhum header de autorização
 
         securityFilter.doFilterInternal(request, response, filterChain);
 

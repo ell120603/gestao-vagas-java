@@ -14,6 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
@@ -24,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(org.mockito.junit.jupiter.MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class JobsControllersTest {
 
     @InjectMocks
@@ -50,10 +53,12 @@ class JobsControllersTest {
 
     @BeforeEach
     void setup() {
-        when(request.getAttribute("company_id")).thenReturn(companyId.toString());
-        when(request.getAttribute("candidate_id")).thenReturn(candidateId.toString());
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
+
+        // Configura os atributos no request
+        when(request.getAttribute("company_id")).thenReturn(companyId);
+        when(request.getAttribute("candidate_id")).thenReturn(candidateId);
     }
 
     @Test

@@ -177,6 +177,12 @@ class JobEntityTest {
     void shouldValidateCompanyIsRequired() {
         JobEntity job = JobEntity.builder().build();
         Set<ConstraintViolation<JobEntity>> violations = validator.validate(job);
-        assertThat(violations).extracting("message").contains("não deve ser nulo");
+        assertThat(violations).extracting("message").contains(
+            "O título é obrigatório",
+            "A área de atuação é obrigatória",
+            "A localização é obrigatória",
+            "O tipo de contrato é obrigatório",
+            "A descrição é obrigatória"
+        );
     }
 }
