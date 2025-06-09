@@ -3,6 +3,7 @@ package br.com.eliel.gestao_vagas.modules.candidate.controllers;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,9 +63,15 @@ public class ProfileCandidateController {
         @ApiResponse(responseCode = "403", description = "Acesso negado"),
         @ApiResponse(responseCode = "404", description = "Candidato não encontrado")
     })
-    public ResponseEntity<ProfileCandidateResponseDTO> profile(HttpServletRequest request) {
-        var candidateId = request.getAttribute("candidate_id");
-        var profile = this.profileCandidateUseCase.execute(UUID.fromString(candidateId.toString()));
-        return ResponseEntity.ok().body(profile);
+    public ResponseEntity<Object> profile(HttpServletRequest request) {
+        try {
+            var candidateId = UUID.fromString(request.getAttribute("candidate_id").toString());
+            var candidate = this.profileCandidateUseCase.execute(candidateId);
+            return ResponseEntity.ok().body(candidate);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("ID do candidato inválido");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

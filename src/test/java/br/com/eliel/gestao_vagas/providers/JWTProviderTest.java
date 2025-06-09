@@ -1,103 +1,123 @@
-package br.com.eliel.gestao_vagas.modules.company.useCases;
+package br.com.eliel.gestao_vagas.providers;
 
-import br.com.eliel.gestao_vagas.modules.company.dto.UpdateCompanyDTO;
-import br.com.eliel.gestao_vagas.modules.company.entites.CompanyEntity;
-import br.com.eliel.gestao_vagas.modules.company.repositories.CompanyRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-class UpdateCompanyUseCaseTest {
+@ExtendWith(MockitoExtension.class)
+class JWTProviderTest {
 
     @InjectMocks
-    private UpdateCompanyUseCase updateCompanyUseCase;
+    private JWTProvider jwtProvider;
 
-    @Mock
-    private CompanyRepository companyRepository;
+    private static final String SECRET_KEY = "secret_key_test";
+    private static final String SUBJECT = "123e4567-e89b-12d3-a456-426614174000";
+    private static final List<String> ROLES = Arrays.asList("COMPANY", "ADMIN");
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        ReflectionTestUtils.setField(jwtProvider, "secretKey", SECRET_KEY);
     }
 
     @Test
-    void execute_UpdatesCompany_WhenFieldsArePresent() {
-        UUID companyId = UUID.randomUUID();
-        CompanyEntity company = new CompanyEntity();
-        company.setId(companyId);
-        company.setName("Old Name");
-        company.setUsername("olduser");
-        company.setEmail("old@email.com");
-        company.setWebsite("https://old.com");
-        company.setDescription("Old desc");
+    void generateToken_ShouldGenerateValidToken() {
+        String token = jwtProvider.generateToken(SUBJECT, ROLES);
 
-        UpdateCompanyDTO dto = UpdateCompanyDTO.builder()
-                .name("New Name")
-                .username("newuser")
-                .email("new@email.com")
-                .website("https://new.com")
-                .description("New desc")
-                .build();
+        assertNotNull(token);
+        assertTrue(token.split("\\.").length == 3, "Token deve ter 3 partes separadas por ponto");
 
-        when(companyRepository.findById(companyId)).thenReturn(Optional.of(company));
-        when(companyRepository.save(any(CompanyEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        CompanyEntity updated = updateCompanyUseCase.execute(companyId, dto);
-
-        assertEquals("New Name", updated.getName());
-        assertEquals("newuser", updated.getUsername());
-        assertEquals("new@email.com", updated.getEmail());
-        assertEquals("https://new.com", updated.getWebsite());
-        assertEquals("New desc", updated.getDescription());
+        DecodedJWT decodedJWT = JWT.decode(token);
+        assertEquals("gestao_vagas", decodedJWT.getIssuer());
+        assertEquals(SUBJECT, decodedJWT.getSubject());
+        assertTrue(decodedJWT.getExpiresAt().toInstant().isAfter(Instant.now()));
+        assertEquals(ROLES, decodedJWT.getClaim("roles").asList(String.class));
     }
 
     @Test
-    void execute_UpdatesOnlyNonNullFields() {
-        UUID companyId = UUID.randomUUID();
-        CompanyEntity company = new CompanyEntity();
-        company.setId(companyId);
-        company.setName("Old Name");
-        company.setUsername("olduser");
-        company.setEmail("old@email.com");
-        company.setWebsite("https://old.com");
-        company.setDescription("Old desc");
+    void validateToken_ShouldReturnSubject_WhenTokenIsValid() {
+        String token = jwtProvider.generateToken(SUBJECT, ROLES);
 
-        UpdateCompanyDTO dto = UpdateCompanyDTO.builder()
-                .name(null)
-                .username("newuser")
-                .email(null)
-                .website(null)
-                .description("New desc")
-                .build();
+        String subject = jwtProvider.validateToken(token);
 
-        when(companyRepository.findById(companyId)).thenReturn(Optional.of(company));
-        when(companyRepository.save(any(CompanyEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        CompanyEntity updated = updateCompanyUseCase.execute(companyId, dto);
-
-        assertEquals("Old Name", updated.getName());
-        assertEquals("newuser", updated.getUsername());
-        assertEquals("old@email.com", updated.getEmail());
-        assertEquals("https://old.com", updated.getWebsite());
-        assertEquals("New desc", updated.getDescription());
+        assertEquals(SUBJECT, subject);
     }
 
     @Test
-    void execute_ThrowsException_WhenCompanyNotFound() {
-        UUID companyId = UUID.randomUUID();
-        UpdateCompanyDTO dto = new UpdateCompanyDTO();
+    void validateToken_ShouldThrowException_WhenTokenIsInvalid() {
+        String invalidToken = "invalid.token.here";
 
-        when(companyRepository.findById(companyId)).thenReturn(Optional.empty());
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> jwtProvider.validateToken(invalidToken));
 
-        EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () ->
-                updateCompanyUseCase.execute(companyId, dto));
-        assertEquals("Empresa não encontrada", ex.getMessage());
+        assertEquals("Token JWT inválido ou expirado", exception.getMessage());
+    }
+
+    @Test
+    void validateToken_ShouldThrowException_WhenTokenIsExpired() {
+        Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+        String expiredToken = JWT.create()
+            .withIssuer("gestao_vagas")
+            .withSubject(SUBJECT)
+            .withClaim("roles", ROLES)
+            .withExpiresAt(Instant.now().minus(Duration.ofHours(1)))
+            .sign(algorithm);
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> jwtProvider.validateToken(expiredToken));
+
+        assertEquals("Token JWT inválido ou expirado", exception.getMessage());
+    }
+
+    @Test
+    void getDecodedJWT_ShouldReturnDecodedJWT_WhenTokenIsValid() {
+        String token = jwtProvider.generateToken(SUBJECT, ROLES);
+
+        DecodedJWT decodedJWT = jwtProvider.getDecodedJWT(token);
+
+        assertNotNull(decodedJWT);
+        assertEquals("gestao_vagas", decodedJWT.getIssuer());
+        assertEquals(SUBJECT, decodedJWT.getSubject());
+        assertEquals(ROLES, decodedJWT.getClaim("roles").asList(String.class));
+    }
+
+    @Test
+    void getDecodedJWT_ShouldThrowException_WhenTokenIsInvalid() {
+        String invalidToken = "invalid.token.here";
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> jwtProvider.getDecodedJWT(invalidToken));
+
+        assertEquals("Token JWT inválido ou expirado", exception.getMessage());
+    }
+
+    @Test
+    void getDecodedJWT_ShouldThrowException_WhenTokenIsExpired() {
+        Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+        String expiredToken = JWT.create()
+            .withIssuer("gestao_vagas")
+            .withSubject(SUBJECT)
+            .withClaim("roles", ROLES)
+            .withExpiresAt(Instant.now().minus(Duration.ofHours(1)))
+            .sign(algorithm);
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> jwtProvider.getDecodedJWT(expiredToken));
+
+        assertEquals("Token JWT inválido ou expirado", exception.getMessage());
     }
 }

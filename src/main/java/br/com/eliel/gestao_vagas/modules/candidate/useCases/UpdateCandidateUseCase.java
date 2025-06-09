@@ -20,6 +20,17 @@ public class UpdateCandidateUseCase {
         CandidateEntity candidate = this.candidateRepository.findById(candidateId)
                 .orElseThrow(() -> new EntityNotFoundException("Candidato não encontrado"));
         
+        if (updateCandidateDTO.getUsername() != null || updateCandidateDTO.getEmail() != null) {
+            var existingCandidate = this.candidateRepository.findByUsernameOrEmail(
+                updateCandidateDTO.getUsername() != null ? updateCandidateDTO.getUsername() : candidate.getUsername(),
+                updateCandidateDTO.getEmail() != null ? updateCandidateDTO.getEmail() : candidate.getEmail()
+            );
+            
+            if (existingCandidate.isPresent() && !existingCandidate.get().getId().equals(candidateId)) {
+                throw new RuntimeException("Usuário já existe");
+            }
+        }
+        
         if (updateCandidateDTO.getName() != null) {
             candidate.setName(updateCandidateDTO.getName());
         }

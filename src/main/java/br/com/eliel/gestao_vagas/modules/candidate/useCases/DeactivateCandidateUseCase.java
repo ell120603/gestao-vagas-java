@@ -18,7 +18,7 @@ public class DeactivateCandidateUseCase {
 
     public void execute(UUID candidateId, String password) {
         var candidate = this.candidateRepository.findById(candidateId)
-            .orElseThrow(() -> new RuntimeException("Candidato não encontrada"));
+            .orElseThrow(() -> new RuntimeException("Candidato não encontrado"));
             
         var passwordMatches = this.passwordEncoder.matches(password, candidate.getPassword());
         

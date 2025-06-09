@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 
 import br.com.eliel.gestao_vagas.modules.candidate.entites.CandidateEntity;
 import br.com.eliel.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
@@ -27,6 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/candidate")
@@ -213,6 +215,8 @@ public class CandidateController {
             var candidateId = UUID.fromString(authentication.getName());
             var updatedCandidate = this.updateCandidateUseCase.execute(candidateId, updateCandidateDTO);
             return ResponseEntity.ok().body(updatedCandidate);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
