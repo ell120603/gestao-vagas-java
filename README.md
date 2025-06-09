@@ -1,4 +1,4 @@
-# Gestão de Vagas - Mircroserviço com Java e Spring Boot
+# Gestão de Vagas - Microserviço com Java e Spring Boot
 
 🔗 **Acesso público à API Swagger:**  
 [https://gestao-vagas-java-qii9.onrender.com/api/swagger-ui/index.html#/](https://gestao-vagas-java-qii9.onrender.com/api/swagger-ui/index.html#/)
@@ -6,68 +6,68 @@
 ---
 
 ## 🛠 Pré-requisitos
+
 Antes de começar, você precisa ter instalado:
 
--Java 17+
+- Java 17+  
+- Maven 3.8+  
+- PostgreSQL  
 
--Maven 3.8+
+💡 Recomenda-se o uso de uma IDE como: **IntelliJ**, **VS Code** ou **Eclipse**
 
--PostgreSQL
-
-💡 Recomenda-se o uso de uma IDE como: **IntelliJ**, **VS Code** ou **Eclipse**)
-
-
-[![Java](https://img.shields.io/badge/Java-17-blue?logo=java)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.0-brightgreen?logo=springboot)](https://spring.io/projects/spring-boot)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blueviolet?logo=postgresql)](https://www.postgresql.org/)
+[![Java](https://img.shields.io/badge/Java-17-blue?logo=java)](https://www.oracle.com/java/)  
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.0-brightgreen?logo=springboot)](https://spring.io/projects/spring-boot)  
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blueviolet?logo=postgresql)](https://www.postgresql.org/)  
 [![Maven](https://img.shields.io/badge/Maven-3.8-orange?logo=apache-maven)](https://maven.apache.org/)
 
->  MircroServiço para gestão de vagas de emprego, desenvolvido com Java 17 e Spring Boot. Projeto criado seguindo boas práticas de arquitetura e desenvolvimento backend.
+> Microserviço para gestão de vagas de emprego, desenvolvido com Java 17 e Spring Boot.  
+> Projeto criado seguindo boas práticas de arquitetura e desenvolvimento backend.
 
 ---
 
 ## 🧩 Visão geral
 
-Este projeto simula uma plataforma robusta e escalável para o gerenciamento de vagas de emprego, utilizando boas práticas de arquitetura e desenvolvimento backend com Java e Spring Boot.
+Este projeto simula uma plataforma robusta e escalável para o gerenciamento de vagas de emprego, utilizando boas práticas de arquitetura com Java e Spring Boot.
 
 Destaques e práticas aplicadas:
 
-🧩 Arquitetura em camadas baseada no padrão MVC (Model-View-Controller), promovendo separação de responsabilidades
-🧠 Organização orientada a DDD (Domain-Driven Design), com foco na modelagem clara e coerente dos domínios de negócio
-🔐 Autenticação segura com JWT para proteção das rotas
-✅ Validação de dados com Bean Validation
-📦 Uso de DTOs (Data Transfer Objects) para comunicação entre camadas
-📚 Documentação interativa com Swagger
-🛢️ Integração com banco de dados PostgreSQL via Spring Data JPA
-🐳 Suporte a Docker para conteinerização e portabilidade
-⛔ Tratamento centralizado de erros para respostas consistentes
+- 🧩 Arquitetura em camadas baseada no padrão MVC (Model-View-Controller), promovendo separação de responsabilidades  
+- 🧠 Organização orientada a DDD (Domain-Driven Design), com foco na modelagem clara e coerente dos domínios de negócio  
+- 🔐 Autenticação segura com JWT para proteção das rotas  
+- ✅ Validação de dados com Bean Validation  
+- 📦 Uso de DTOs (Data Transfer Objects) para comunicação entre camadas  
+- 📚 Documentação interativa com Swagger  
+- 🛢️ Integração com banco de dados PostgreSQL via Spring Data JPA  
+- 🐳 Suporte a Docker para conteinerização e portabilidade  
+- ⛔ Tratamento centralizado de erros para respostas consistentes  
 
 ---
 
 ## ⚙️ Funcionalidades atuais
 
-- ✅ Cadastro, autenticação e gerenciamento de empresas
-- ✅ Criação, edição, listagem pública e remoção de vagas
-- ✅ Cadastro e gerenciamento de candidatos
-- ✅ Proteção de rotas com autenticação JWT
-- ✅ Documentação automática e interativa com Swagger
+- ✅ Cadastro, autenticação e gerenciamento de empresas  
+- ✅ Criação, edição, listagem pública e remoção de vagas  
+- ✅ Cadastro e gerenciamento de candidatos  
+- ✅ Proteção de rotas com autenticação JWT  
+- ✅ Documentação automática e interativa com Swagger  
 
 ---
 
 ## 📦 Tecnologias utilizadas
 
-- **Java 17**
-- **Spring Boot 3**
-- **Spring Data JPA**
-- **PostgreSQL**
-- **Maven**
-- **Lombok**
-- **Hibernate Validator**
+- **Java 17**  
+- **Spring Boot 3**  
+- **Spring Data JPA**  
+- **PostgreSQL**  
+- **Maven**  
+- **Lombok**  
+- **Hibernate Validator**  
 
 ---
 
 ## 🗂 Estrutura do Projeto
 
+```
 gestao-vagas-java/
 ├── config/         # Configurações (Banco, Swagger, etc.)
 ├── controllers/    # Camada de controle (REST)
@@ -77,6 +77,7 @@ gestao-vagas-java/
 ├── services/       # Lógica de negócio
 ├── exceptions/     # Tratamento de erros
 └── ...
+```
 
 ## 📦 Exemplos de Payloads
 
