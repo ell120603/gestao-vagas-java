@@ -214,7 +214,12 @@ Este projeto foi desenvolvido por:
   🔹 💼 Cadastro e autenticação de empresa  
   🔹 📝 Listagem de vagas  
   🔹 🔧 Criação de vagas
-  🧪 Testes unitários  
+  🧪 Testes unitários
+  🔹  Configuração do Swagger
+  🔹  Configuração do Projeto e rotas
+  🔹  Configuração do Docker
+  🔹  Ajustes de bugs
+  🔹  Deploy do projeto
 
 - **Emilie**  
   🔹 🧪 Testes unitários  
