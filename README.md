@@ -9,9 +9,7 @@
 
 Antes de começar, você precisa ter instalado:
 
-- Java 17+  
-- Maven 3.8+  
-- PostgreSQL  
+- Java 17+  - Maven 3.8+  - PostgreSQL  
 
 💡 Recomenda-se o uso de uma IDE como: **IntelliJ**, **VS Code** ou **Eclipse**
 
