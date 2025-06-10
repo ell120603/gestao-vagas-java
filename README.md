@@ -214,6 +214,7 @@ Este projeto foi desenvolvido por:
   🔹 💼 Cadastro e autenticação de empresa  
   🔹 📝 Listagem de vagas  
   🔹 🔧 Criação de vagas
+
   🧪 Testes unitários
   
   🔹  Configuração do Swagger
