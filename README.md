@@ -119,7 +119,7 @@ gestao-vagas-java/
   "titulo": "Desenvolvedor Full Stack",
   "descricao": "Vaga para desenvolvedor full stack com experiência em React e Node.js",
   "areaAtuacao": "TI",
-  "tecnologias": ["React", "Node.js", "TypeScript", "PostgreSQL", "Docker"],
+  "requisitos": ["React", "Node.js", "TypeScript", "PostgreSQL", "Docker"],
   "tipoContrato": "CLT",
   "localizacao": "Remoto",
   "salario": 12000.00,
@@ -131,7 +131,7 @@ gestao-vagas-java/
   "titulo": "Analista de Marketing Digital",
   "descricao": "Experiência com redes sociais e campanhas online",
   "areaAtuacao": "Marketing",
-  "tecnologias": ["Google Analytics", "Meta Ads"],
+  "requisitos": ["Google Analytics", "Meta Ads"],
   "tipoContrato": "CLT",
   "localizacao": "São Paulo - Híbrido",
   "salario": 5000.00,
@@ -143,7 +143,7 @@ gestao-vagas-java/
   "titulo": "Médico Clínico Geral",
   "descricao": "Atuação em clínica médica",
   "areaAtuacao": "Medicina",
-  "tecnologias": ["Prontuário Eletrônico"],
+  "requisitos": ["Prontuário Eletrônico"],
   "tipoContrato": "PJ",
   "localizacao": "Rio de Janeiro",
   "salario": 15000.00,
@@ -214,7 +214,7 @@ Este projeto foi desenvolvido por:
   🔹 💼 Cadastro e autenticação de empresa  
   🔹 📝 Listagem de vagas  
   🔹 🔧 Criação de vagas
-  🔹 📚 Documentação  
+  🧪 Testes unitários  
 
 - **Emilie**  
   🔹 🧪 Testes unitários  
@@ -228,6 +228,7 @@ Este projeto foi desenvolvido por:
   🔹 🔁 Rotas de alteração (Candidato, Empresa)  
   🔹 👥 Listagem de candidatos da vaga  
   🔹 🔍 Pesquisa com filtros em vagas
+  🔹 📚 Documentação
 
 - **Rafael**  
   🔹 🚫 Desativação de candidato  
