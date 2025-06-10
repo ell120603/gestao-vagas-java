@@ -226,6 +226,8 @@ Este projeto foi desenvolvido por:
   🔹  Ajustes de bugs
 
   🔹  Deploy do projeto
+
+  🔹  Segurança da rotas atráves do JWT
   
 
 - **Emilie**  
