@@ -228,6 +228,8 @@ Este projeto foi desenvolvido por:
   🔹  Deploy do projeto
 
   🔹  Segurança da rotas atráves do JWT
+
+  🚫 Desativação de candidato
   
 
 - **Emilie**  
