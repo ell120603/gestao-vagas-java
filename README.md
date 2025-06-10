@@ -9,14 +9,13 @@
 
 Antes de começar, você precisa ter instalado:
 
-- Java 17+  - Maven 3.8+  - PostgreSQL  
+- Java 17+
+-  - Maven 3.8+
+-  - PostgreSQL  
 
 💡 Recomenda-se o uso de uma IDE como: **IntelliJ**, **VS Code** ou **Eclipse**
 
-[![Java](https://img.shields.io/badge/Java-17-blue?logo=java)](https://www.oracle.com/java/)  
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.0-brightgreen?logo=springboot)](https://spring.io/projects/spring-boot)  
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blueviolet?logo=postgresql)](https://www.postgresql.org/)  
-[![Maven](https://img.shields.io/badge/Maven-3.8-orange?logo=apache-maven)](https://maven.apache.org/)
+[![Java](https://img.shields.io/badge/Java-17-blue?logo=java)](https://www.oracle.com/java/)  [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.0-brightgreen?logo=springboot)](https://spring.io/projects/spring-boot)  [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blueviolet?logo=postgresql)](https://www.postgresql.org/)  [![Maven](https://img.shields.io/badge/Maven-3.8-orange?logo=apache-maven)](https://maven.apache.org/)
 
 > Microserviço para gestão de vagas de emprego, desenvolvido com Java 17 e Spring Boot.  
 > Projeto criado seguindo boas práticas de arquitetura e desenvolvimento backend.
