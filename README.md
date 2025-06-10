@@ -235,7 +235,9 @@ Este projeto foi desenvolvido por:
 - **Francisco**  
   🔹 🧪 Testes unitários  
   🔹 👔 Exibição de perfil da empresa  
-  🔹 📩 Candidatura em vaga  
+  🔹 📩 Candidatura em vaga
+  
+  🔹 📚 Documentação e readme
 
 - **Pietro**  
   🔹 🔁 Rotas de alteração (Candidato, Empresa)  
